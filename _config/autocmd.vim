@@ -663,10 +663,10 @@ function! s:my_ft_gitcommit() abort
   setlocal formatoptions+=t
   setlocal spell spelllang=en_us
 
-  inoremap <C-l><C-o> <Cmd>lua require'plugins.telescope_nvim'.git_commit_prefix()<CR>
+  "inoremap <C-l><C-o> <Cmd>lua require'plugins.telescope_nvim'.git_commit_prefix()<CR>
 
   startinsert!
-  call feedkeys("\<C-l>\<C-o>")
+  "call feedkeys("\<C-l>\<C-o>")
 endfunction
 
 " ====================

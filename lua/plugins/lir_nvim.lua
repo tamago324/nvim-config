@@ -26,9 +26,9 @@ local xactions = require("xlir.actions")
 
 local ns = vim.api.nvim_create_namespace("my_lir")
 
--- require("lir.git_status").setup({
--- 	show_ignored = true,
--- })
+require("lir.git_status").setup({
+	show_ignored = true,
+})
 
 ---@class my_lir_states
 ---@field last_dir string
@@ -235,7 +235,7 @@ require("lir").setup({
 		winblend = 0,
 		curdir_window = {
 			enable = true,
-			highlight_dirname = false,
+			highlight_dirname = true,
 		},
 
 		-- You can define a function that returns a table to be passed as the third

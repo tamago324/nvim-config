@@ -54,11 +54,9 @@ Plug 'lewis6991/gitsigns.nvim'
 Plug 'tyru/open-browser-github.vim'
 Plug 'tyru/open-browser.vim'
 
-" fuzzy finder
-Plug 'nvim-lua/telescope.nvim'
-
 " ファイラー
 Plug 'tamago324/lir.nvim'
+"Plug '~/ghq/github.com/tamago324/lir.nvim'
 Plug 'tamago324/lir-git-status.nvim'
 
 " クリップボード
@@ -79,7 +77,7 @@ Plug 'tamago324/vim-search-pulse'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'monaqa/modesearch.vim'
 Plug 'rlane/pounce.nvim'
-Plug 'MagicDuck/grug-far.nvim'
+"Plug 'MagicDuck/grug-far.nvim'
 
 " tree-sitter
 Plug 'nvim-treesitter/nvim-treesitter'

@@ -114,7 +114,6 @@ local find_files = function()
 	local dir = require("lspconfig.util").find_git_ancestor(cwd)
 	if dir == nil or dir == "" then
 		require("telescope.builtin").find_files({
-			-- layout_strategy = 'horizontal',
 			cwd = cwd,
 		})
 	else
