@@ -15,12 +15,14 @@ call plug#begin(g:plug_install_dir)
 Plug 'cohama/lexima.vim'
 Plug 'svermeulen/vim-cutlass'
 Plug 'machakann/vim-sandwich'
-"Plug 'Shougo/deol.nvim'
 Plug 'kevinhwang91/nvim-bqf'
 Plug 'thinca/vim-quickrun'
   Plug 'statiolake/vim-quickrun-runner-nvimterm'
   Plug 'lambdalisue/vim-quickrun-neovim-job'
 Plug 'simeji/winresizer'
+
+" terminal (weztermとの連携)
+Plug 'mrjones2014/smart-splits.nvim'
 
 " color
 Plug 'sainnhe/edge'
@@ -56,7 +58,6 @@ Plug 'tyru/open-browser.vim'
 
 " ファイラー
 Plug 'tamago324/lir.nvim'
-"Plug '~/ghq/github.com/tamago324/lir.nvim'
 Plug 'tamago324/lir-git-status.nvim'
 
 " クリップボード
@@ -77,7 +78,6 @@ Plug 'tamago324/vim-search-pulse'
 Plug 'kevinhwang91/nvim-hlslens'
 Plug 'monaqa/modesearch.vim'
 Plug 'rlane/pounce.nvim'
-"Plug 'MagicDuck/grug-far.nvim'
 
 " tree-sitter
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -89,16 +89,10 @@ Plug 'windwp/nvim-ts-autotag'
 " indent
 Plug 'shellRaining/hlchunk.nvim'
 
-" terminal
-"Plug 'Shougo/deol.nvim'
-Plug 'Shougo/ddt.vim'
-Plug 'Shougo/ddt-ui-terminal'
-
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'
-Plug 'nvimdev/lspsaga.nvim'
 Plug 'onsails/lspkind-nvim'
 Plug 'matsui54/denops-signature_help'
 Plug 'RRethy/vim-illuminate'
@@ -108,7 +102,6 @@ Plug 'tamago324/nlsp-settings.nvim'
 Plug 'j-hui/fidget.nvim' " LSPのローディングをカッコよくする
 Plug 'rachartier/tiny-inline-diagnostic.nvim' " ErrorLens
 Plug 'lewis6991/hover.nvim' " hover
-"Plug 'dnlhc/glance.nvim'
 Plug 'smjonas/inc-rename.nvim' " rename
 Plug 'aznhe21/actions-preview.nvim' " code actions + telescope
 
