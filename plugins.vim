@@ -116,6 +116,8 @@ Plug 'aznhe21/actions-preview.nvim' " code actions + telescope
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim'
 Plug 'nvim-telescope/telescope-ghq.nvim'
+Plug 'danielfalk/smart-open.nvim'
+Plug 'kkharji/sqlite.lua'
 
 " formatter
 Plug 'stevearc/conform.nvim'

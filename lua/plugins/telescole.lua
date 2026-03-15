@@ -9,7 +9,7 @@ local sorters = require("telescope.sorters")
 
 require('telescope').setup({
   defaults = {
-    layout_strategy = "bottom_pane",
+    layout_strategy = "horizontal",
 
 		winblend = 0,
 		sorting_strategy = "ascending",
@@ -89,8 +89,15 @@ require('telescope').setup({
 			override_generic_sorter = true,
 			override_file_sorter = true,
 		},
+    smart_open = {
+      ignore_patterns = {
+        ".pyenv/*"
+      }
+    }
   }
 })
+
+require("telescope").load_extension("smart_open")
 
 local ext = function(name)
 	return require("plugins/telescope/" .. name)
@@ -166,3 +173,4 @@ vim.keymap.set("n", "<Space><CR>", n_commands, { noremap = true, silent = true }
 vim.keymap.set("x", "<Space><CR>", x_commands, { noremap = true, silent = true })
 vim.keymap.set("n", ",c", current_buffer_line, { noremap = true, silent = true })
 vim.keymap.set("n", ",w", find_files, { noremap = true, silent = true })
+vim.keymap.set("n", ",s", '<Cmd>Telescope smart_open<CR>', { noremap = true, silent = true })
