@@ -15,20 +15,41 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local jump_or_list = require("xlsp.jump_or_list")
     local map_opts = { buffer = ev.buf, noremap = true, silent = true }
 
-    vim.keymap.set("n", "<Up>", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", map_opts)
-    vim.keymap.set("n", "<Down>", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", map_opts)
-    vim.keymap.set("n", "K", "<Cmd>Lspsaga hover_doc<CR>", map_opts)
+    -- vim.keymap.set("n", "<Up>", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", map_opts)
+    -- vim.keymap.set("n", "<Down>", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", map_opts)
+    vim.keymap.set('n', '<Up>', function()
+      vim.diagnostic.jump({
+        count = -1,
+        float = false,
+      })
+    end)
+    vim.keymap.set('n', '<Down>', function()
+      vim.diagnostic.jump({
+        count = 1,
+        float = false,
+      })
+    end)
+
+    -- K (hover) は hover.nvim を使う
     vim.keymap.set("n", "<A-l>", vim.diagnostic.setloclist, map_opts)
     vim.keymap.set("n", "<A-p>", function()
       vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
     end, map_opts)
 
-    vim.keymap.set("n", "tr", "<Cmd>Lspsaga rename<CR>", map_opts)
+    -- vim.keymap.set("n", "tr", "<Cmd>Lspsaga rename<CR>", map_opts)
+    vim.keymap.set("n", "tr", function()
+      return ":IncRename " .. vim.fn.expand("<cword>")
+    end, { expr = true })
+
     vim.keymap.set("n", "ta", "<Cmd>Lspsaga code_action<CR>", map_opts)
     vim.keymap.set("n", "td", jump_or_list.definition, map_opts)
     vim.keymap.set("n", "tl", jump_or_list.references, map_opts)
     vim.keymap.set("n", "tt", jump_or_list.typeDefinition, map_opts)
     vim.keymap.set("n", "ti", jump_or_list.implementation, map_opts)
+    -- vim.keymap.set('n', 'td', '<CMD>Glance definitions<CR>', map_opts)
+    -- vim.keymap.set('n', 'tl', '<CMD>Glance references<CR>', map_opts)
+    -- vim.keymap.set('n', 'tt', '<CMD>Glance type_definitions<CR>', map_opts)
+    -- vim.keymap.set('n', 'ti', '<CMD>Glance implementations<CR>', map_opts)
   end
 })
 
@@ -82,12 +103,12 @@ if has_lspsaga then
       },
     },
     lightbulb = {
-      enable = true,
-      sign = true,
+      enable = false,
+      -- sign = true,
       -- debounce = 10,
       -- sign_priority = 40,
-      virtual_text = false,
-      enable_in_insert = false,
+      -- virtual_text = false,
+      -- enable_in_insert = false,
       -- ignore = {
       --   clients = {},
       --   ft = {},

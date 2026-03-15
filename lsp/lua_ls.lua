@@ -13,6 +13,9 @@ return {
 				}, vim.fn.PlugLuaLibraries()),
 				preloadFileSize = 500,
 			},
+    ["diagnostics.globals"]= {
+        "vim"
+      }
 		},
 	},
 }

@@ -50,10 +50,9 @@ Plug 'tpope/vim-dispatch'
 Plug 'sindrets/diffview.nvim'
 Plug 'lewis6991/gitsigns.nvim'
 
-" 便利
-Plug 'Bakudankun/BackAndForward.vim'
-Plug 'thinca/vim-ref'
-Plug 'hrsh7th/vim-gindent'
+" ブラウザ系
+Plug 'tyru/open-browser-github.vim'
+Plug 'tyru/open-browser.vim'
 
 " fuzzy finder
 Plug 'nvim-lua/telescope.nvim'
@@ -72,14 +71,14 @@ Plug 'Shougo/context_filetype.vim'
 
 " 検索 / ジャンプ系
 Plug 'haya14busa/vim-asterisk'
-"Plug 'hrsh7th/vim-searchx'
+Plug 'hrsh7th/vim-searchx'
 Plug 'hrsh7th/vim-eft'
 Plug 'andymass/vim-matchup'
-"Plug 'yuki-yano/fuzzy-motion.vim'
 Plug 'tamago324/vim-search-pulse'
 Plug 'kevinhwang91/nvim-hlslens'
-"Plug 'monaqa/modesearch.vim'
+Plug 'monaqa/modesearch.vim'
 Plug 'rlane/pounce.nvim'
+Plug 'MagicDuck/grug-far.nvim'
 
 " tree-sitter
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -102,6 +101,12 @@ Plug 'RRethy/vim-illuminate'
 Plug 'folke/lsp-colors.nvim'
 Plug 'folke/trouble.nvim'
 Plug 'tamago324/nlsp-settings.nvim'
+Plug 'j-hui/fidget.nvim' " LSPのローディングをカッコよくする
+Plug 'rachartier/tiny-inline-diagnostic.nvim' " ErrorLens
+Plug 'lewis6991/hover.nvim' " hover
+"Plug 'dnlhc/glance.nvim'
+Plug 'smjonas/inc-rename.nvim' " rename
+Plug 'aznhe21/actions-preview.nvim' " code actions
 
 " formatter
 Plug 'stevearc/conform.nvim'
@@ -125,9 +130,11 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'notomo/promise.nvim'
+Plug 'vim-denops/denops.vim'
 
 " markdown
-Plug 'MeanderingProgrammer/render-markdown.nvim'
+"Plug 'MeanderingProgrammer/render-markdown.nvim'
+Plug 'OXY2DEV/markview.nvim'
 
 " 裏で動いてくれるやつ
 Plug 'kana/vim-niceblock'
@@ -148,5 +155,16 @@ Plug 'lambdalisue/vim-backslash'
 " Plug 'mvllow/modes.nvim'
 " Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'rcarriga/nvim-notify'
+
+" 便利
+Plug 'thinca/vim-prettyprint', { 'on': ['PP', 'PrettyPrint'] }
+Plug 'thinca/vim-qfreplace', { 'on': 'Qfreplace' }
+Plug 'lambdalisue/suda.vim'
+Plug 'tyru/capture.vim', { 'on': 'Capture' }
+"Plug 'mattn/sonictemplate-vim'
+Plug 'Bakudankun/BackAndForward.vim'
+Plug 'thinca/vim-ref'
+Plug 'hrsh7th/vim-gindent'
+
 
 call plug#end()

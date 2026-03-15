@@ -48,7 +48,6 @@ local make_function = function(action, make_params)
 				utils.jump_to_location(filtered_result[1], offset_encoding)
 			else
 				local locations = vim.lsp.util.locations_to_items(filtered_result, offset_encoding)
-        pprint(locations)
 				vim.fn.setqflist(locations)
 				vim.cmd("ToggleQuickfix")
 			end
