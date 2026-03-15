@@ -63,6 +63,7 @@ Plug 'tamago324/lir-git-status.nvim'
 
 " クリップボード
 Plug 'rcmdnk/yankround.vim'
+"Plug 'gbprod/yanky.nvim'
 
 " コメント
 Plug 'tyru/caw.vim'
@@ -106,7 +107,12 @@ Plug 'rachartier/tiny-inline-diagnostic.nvim' " ErrorLens
 Plug 'lewis6991/hover.nvim' " hover
 "Plug 'dnlhc/glance.nvim'
 Plug 'smjonas/inc-rename.nvim' " rename
-Plug 'aznhe21/actions-preview.nvim' " code actions
+Plug 'aznhe21/actions-preview.nvim' " code actions + telescope
+
+" fizzy finder
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim'
+Plug 'nvim-telescope/telescope-ghq.nvim'
 
 " formatter
 Plug 'stevearc/conform.nvim'
@@ -149,7 +155,7 @@ Plug 'nacro90/numb.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'lambdalisue/mr.vim'
 Plug 'petertriho/nvim-scrollbar'
-Plug 'dstein64/nvim-scrollview'
+Plug 'dstein64/nvim-scrollview' " スクロールバーのところにdiagnosticsを表示
  Plug 'aiya000/aho-bakaup.vim'
 Plug 'lambdalisue/vim-backslash'
 " Plug 'mvllow/modes.nvim'
