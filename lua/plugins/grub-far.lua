@@ -5,3 +5,5 @@ if vim.api.nvim_call_function("FindPlugin", { "grug-far.nvim" }) == 0 then
 end
 
 require('grug-far').setup({})
+
+vim.keymap.set('n', '<Space>fg', ':<C-u>GrugFar ')

@@ -91,6 +91,11 @@ Plug 'windwp/nvim-ts-autotag'
 " indent
 Plug 'shellRaining/hlchunk.nvim'
 
+" terminal
+"Plug 'Shougo/deol.nvim'
+Plug 'Shougo/ddt.vim'
+Plug 'Shougo/ddt-ui-terminal'
+
 " LSP
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'

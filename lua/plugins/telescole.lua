@@ -158,6 +158,7 @@ end
 
 map_ext("n", ",f", "mru")
 map_ext("n", "<Space>fj", "buffers")
+map_ext("n", "<Space><Tab>", "ghq")
 
 vim.keymap.set("n", "<Space>fv", find_vimfiles, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>ft", filetypes, { noremap = true, silent = true })
