@@ -57,3 +57,13 @@ omap il <Plug>(textobj-line-i)
 " \	[ "'", "'", 1 ],
 " \	[ "`", "`", 1 ],
 " \]
+
+" j: variable-segment
+let g:loaded_textobj_variable_segment = 1
+
+call textobj#user#plugin('variable', {
+    \ '-': {
+    \     'sfile': expand('<sfile>:p'),
+    \     'select-a': 'aj',  'select-a-function': 'textobj#variable_segment#select_a',
+    \     'select-i': 'ij',  'select-i-function': 'textobj#variable_segment#select_i',
+    \ }})

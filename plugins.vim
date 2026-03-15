@@ -22,7 +22,12 @@ Plug 'thinca/vim-quickrun'
   Plug 'lambdalisue/vim-quickrun-neovim-job'
 Plug 'simeji/winresizer'
 
+" color
 Plug 'sainnhe/edge'
+Plug 'projekt0n/github-nvim-theme'
+
+" statusline
+Plug 'nvim-lualine/lualine.nvim'
 
 " operator
 Plug 'kana/vim-operator-replace'
@@ -42,7 +47,8 @@ Plug 'kana/vim-textobj-line'
 " git
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
-"Plug 'sindrets/diffview.nvim'
+Plug 'sindrets/diffview.nvim'
+Plug 'lewis6991/gitsigns.nvim'
 
 " 便利
 Plug 'Bakudankun/BackAndForward.vim'
@@ -59,11 +65,88 @@ Plug 'tamago324/lir-git-status.nvim'
 " クリップボード
 Plug 'rcmdnk/yankround.vim'
 
+" コメント
+Plug 'tyru/caw.vim'
+"Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+Plug 'Shougo/context_filetype.vim'
+
+" 検索 / ジャンプ系
+Plug 'haya14busa/vim-asterisk'
+"Plug 'hrsh7th/vim-searchx'
+Plug 'hrsh7th/vim-eft'
+Plug 'andymass/vim-matchup'
+"Plug 'yuki-yano/fuzzy-motion.vim'
+Plug 'tamago324/vim-search-pulse'
+Plug 'kevinhwang91/nvim-hlslens'
+"Plug 'monaqa/modesearch.vim'
+Plug 'rlane/pounce.nvim'
+
+" tree-sitter
+Plug 'nvim-treesitter/nvim-treesitter'
+"Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+"Plug 'nvim-treesitter/playground'
+Plug 'windwp/nvim-ts-autotag'
+"Plug 'yioneko/nvim-yati'
+
+" indent
+Plug 'shellRaining/hlchunk.nvim'
+
+" LSP
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
+Plug 'nvimdev/lspsaga.nvim'
+Plug 'onsails/lspkind-nvim'
+Plug 'matsui54/denops-signature_help'
+Plug 'RRethy/vim-illuminate'
+Plug 'folke/lsp-colors.nvim'
+Plug 'folke/trouble.nvim'
+Plug 'tamago324/nlsp-settings.nvim'
+
+" formatter
+Plug 'stevearc/conform.nvim'
+
+" 補完
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+"Plug 'tamago324/cmp-necosyntax'
+"Plug 'Shougo/neco-syntax'
+"Plug 'hrsh7th/cmp-nvim-lua'
+
+ Plug 'L3MON4D3/LuaSnip'
+ Plug 'saadparwaiz1/cmp_luasnip'
+
 " util
 Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'notomo/promise.nvim'
+
+" markdown
+Plug 'MeanderingProgrammer/render-markdown.nvim'
+
+" 裏で動いてくれるやつ
+Plug 'kana/vim-niceblock'
+Plug 'vim-jp/vimdoc-ja'
+Plug 'junegunn/vim-plug'
+" Plug 'kdav5758/NoCLC.nvim'
+Plug 'lambdalisue/edita.vim'
+" Plug 'ludovicchabant/vim-gutentags'
+Plug 'lambdalisue/vim-protocol'
+Plug 'mattn/vim-findroot'
+Plug 'nacro90/numb.nvim'
+Plug 'norcalli/nvim-colorizer.lua'
+Plug 'lambdalisue/mr.vim'
+Plug 'petertriho/nvim-scrollbar'
+Plug 'dstein64/nvim-scrollview'
+ Plug 'aiya000/aho-bakaup.vim'
+Plug 'lambdalisue/vim-backslash'
+" Plug 'mvllow/modes.nvim'
+" Plug 'lukas-reineke/indent-blankline.nvim'
+Plug 'rcarriga/nvim-notify'
 
 call plug#end()

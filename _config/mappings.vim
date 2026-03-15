@@ -21,10 +21,10 @@ xnoremap . :normal! .<CR>
 nnoremap cd <Cmd>exec 'lcd ' .. resolve(expand('%:p:h')) \| pwd<CR>
 
 nnoremap <Space>vs. <Cmd>source %<CR>
-" nnoremap <expr> <Space>vs. <Cmd>call LoadLuaScript()<CR>
 
 " update は変更があったときのみ保存するコマンド
 nnoremap <Space>w <Cmd>update<CR>
+nnoremap <C-s> <Cmd>update<CR>
 nnoremap <Space>W <Cmd>update!<CR>
 
 " function! s:quit(...) abort

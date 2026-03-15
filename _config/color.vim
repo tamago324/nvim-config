@@ -82,6 +82,13 @@ function! s:define_my_highlight() abort
   " hi IndentBlanklineContextChar guifg=#8a8e9e
   hi IndentBlanklineContextChar guifg=#74798b
 
+  " 背景色をグレーにする
+  hi PounceUnmatched  ctermfg=248 guifg=#777777
+  
+  hi PounceMatch      gui=underline,bold guifg=#555555 guibg=#FFAF60
+  hi PounceGap        gui=underline,bold guifg=#555555 guibg=#AAAAAA
+  hi PounceAccept     gui=underline,reverse,bold guifg=#555555 guibg=#AAAAAA
+  hi PounceAcceptBest gui=underline,bold guifg=#555555 guibg=#AAEEAA
 
 endfunction
 
@@ -104,5 +111,3 @@ let g:edge_menu_selection_background = 'blue'
 
 
 colorscheme edge
-
-" IncreaseContrast 0.1
