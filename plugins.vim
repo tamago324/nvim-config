@@ -174,4 +174,6 @@ Plug 'hrsh7th/vim-gindent'
 Plug 'EthanJWright/vs-tasks.nvim'
 Plug 't9md/vim-quickhl'
 
+Plug 'stevearc/overseer.nvim'
+
 call plug#end()
