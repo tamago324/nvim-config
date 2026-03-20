@@ -21,7 +21,7 @@ local uv = vim.loop
 
 local actions = require("lir.actions")
 local xactions = require("xlir.actions")
--- local xpreview = require("xlir.float_preview")
+local xpreview = require("xlir.float_preview")
 -- local tsserver_rename = require("xlir.actions.tsserver_rename")
 
 local ns = vim.api.nvim_create_namespace("my_lir")
@@ -112,7 +112,7 @@ require("lir").setup({
 		["U"] = nop,
 		["o"] = nop,
 		["r"] = nop,
-		["p"] = nop,
+		-- ["p"] = nop,
 		["i"] = nop,
 		["I"] = nop,
 		["x"] = nop,
@@ -229,7 +229,7 @@ require("lir").setup({
 		--   vim.cmd("Fin -matcher=fuzzy")
 		-- end
 
-		-- ["p"] = xpreview.preview_toggle
+		["p"] = xpreview.toggle
 	},
 	float = {
 		winblend = 0,
@@ -367,6 +367,7 @@ _G.x_lir_init = function()
 		dir = vim.fn.expand("~")
 	end
 	require("lir.float").toggle(dir)
+  xpreview.on()
 end
 
 require("xlir.persist_history").setup()

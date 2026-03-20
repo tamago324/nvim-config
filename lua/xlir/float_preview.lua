@@ -1,21 +1,30 @@
--- lir のプレビュー
--- lir の float window に合わせて、表示してあげる
+-- lir float preview
+-- lir の float window に合わせて、表示する
 local a = vim.api
 local lir = require("lir")
+local config = require("lir.config")
+local devicons = require("lir.devicons")
+local highlight = require('lir.highlight')
+local uv = vim.loop
 
 local Promise = require("promise")
 local Path = require("plenary.path")
 local filetype = require("plenary.filetype")
 
-local putils = require("telescope.previewers.utils")
-
 local M = {}
 
-local float_bufnr = nil
-local float_win = nil
+local float_preview_bufnr = nil
+local float_preview_win = nil
 local preview_enable = false
 
-local function setup_autocmd(bufnr, win_id)
+local nvim011 = vim.fn.has "nvim-0.11" == 1
+local has_ts_parser = (nvim011 and vim.treesitter.language.add)
+  or function(lang)
+    return pcall(vim.treesitter.language.add, lang)
+  end
+
+
+local function setup_autocmd(bufnr)
 	vim.cmd(
 		string.format(
 			"autocmd WinClosed,BufLeave,BufDelete <buffer=%s> ++nested ++once :lua require('xlir.float_preview').close()",
@@ -40,39 +49,84 @@ local function split(s, sep, plain, opts)
 	return t
 end
 
+local ts_highlight_on = function (bufnr, path)
+  -- treesitter を使って、ハイライトする
+  local ft = filetype.detect_from_extension(path)
+
+  if ft and ft ~= "" then
+    local lang = vim.treesitter.language.get_lang(ft) or ft
+    if lang and has_ts_parser(lang) then
+      return vim.treesitter.start(bufnr, lang)
+    end
+  else
+    -- もし、treesitterに対応していないなら、 syntax を ON にする
+    vim.api.nvim_buf_set_option(bufnr, "syntax", ft)
+  end
+end
+
 local function read_file_setlines(filepath, bufnr)
 	local opts = {}
 	opts.start_time = vim.loop.hrtime()
 	opts.timeout = 100
 
 	Promise.new(function(resolve)
-		Path:new(filepath):_read_async(function(data)
+		Path:new(filepath):read(function(data)
 			resolve(filepath, data)
 		end)
 	end):next(vim.schedule_wrap(function(path, data)
 		local processed_data = split(data, "[\r]?\n", false, opts)
-
 		if processed_data then
 			a.nvim_buf_set_lines(bufnr, 0, -1, false, processed_data)
-			-- local ok = pcall()
-			-- if not ok then
-			--   return Promise.reject()
-			-- end
-
-			-- treesitter を使って、ハイライトする
-			local ft = filetype.detect_from_extension(path)
-			if not putils.ts_highlighter(bufnr, ft) then
-				-- もし、treesitterに対応していないなら、 syntax を ON にする
-				vim.api.nvim_buf_set_option(bufnr, "syntax", ft)
-			end
+      ts_highlight_on(bufnr, path)
 		end
 	end))
 end
 
-function M.preview_toggle()
-	preview_enable = not preview_enable
+-- from lir.lua
+local function readdir(path)
+  local files = {}
+  local handle = uv.fs_scandir(path)
+  if handle == nil then
+    return {}
+  end
 
-	M.preview()
+  while true do
+    local name, _ = uv.fs_scandir_next(handle)
+    if name == nil then
+      break
+    end
+    local p = Path:new(path):joinpath(name)
+    local is_dir = p:is_dir()
+    local file = {
+      value = name,
+      is_dir = is_dir,
+      fullpath = p:absolute(),
+      display = nil,
+      devicons = nil,
+    }
+
+    local prefix = config.values.hide_cursor and "" or " "
+
+    if config.values.devicons and config.values.devicons.enable then
+      local icon, highlight_name = devicons.get_devicons(name, is_dir)
+      file.display = string.format("%s%s %s%s", prefix, icon, name, (is_dir and "/" or ""))
+      file.devicons = { icon = icon, highlight_name = highlight_name }
+    else
+      file.display = prefix .. name .. (is_dir and "/" or "")
+    end
+
+    table.insert(files, file)
+  end
+  return files
+end
+
+local function sort(lhs, rhs)
+  if lhs.is_dir and not rhs.is_dir then
+    return true
+  elseif not lhs.is_dir and rhs.is_dir then
+    return false
+  end
+  return lhs.value < rhs.value
 end
 
 function M.preview()
@@ -89,26 +143,21 @@ function M.preview()
 		return
 	end
 
-	local lnum = vim.fn.getpos(".")
-
 	local filepath
-	local is_dir
 	if lir_ctx:current() then
 		filepath = lir_ctx:current().fullpath
-		is_dir = lir_ctx:current().is_dir
 	end
 
 	local lir_win = a.nvim_get_current_win()
 	local lir_bufnr = a.nvim_win_get_buf(0)
 
 	local opts = a.nvim_win_get_config(0)
-	float_bufnr = a.nvim_create_buf(false, true)
+	float_preview_bufnr = a.nvim_create_buf(false, true)
 
 	local half = math.floor(opts.width / 2)
-
 	local win_opts = {
-		col = opts.col[false] + half,
-		row = opts.row[false] + 1,
+		col = opts.col + half,
+		row = opts.row + 1,
 		width = half,
 		height = opts.height,
 		focusable = false,
@@ -127,55 +176,82 @@ function M.preview()
 		zindex = opts.zindex + 10,
 	}
 
-	float_win = a.nvim_open_win(float_bufnr, true, win_opts)
-	a.nvim_win_set_option(float_win, "cursorline", false)
-	a.nvim_win_set_option(float_win, "cursorcolumn", false)
-	a.nvim_win_set_option(float_win, "wrap", false)
-	a.nvim_win_set_option(float_win, "signcolumn", "no")
-	a.nvim_win_set_option(float_win, "foldlevel", 50)
+	float_preview_win = a.nvim_open_win(float_preview_bufnr, true, win_opts)
+	a.nvim_win_set_option(float_preview_win, "cursorline", false)
+	a.nvim_win_set_option(float_preview_win, "cursorcolumn", false)
+	a.nvim_win_set_option(float_preview_win, "wrap", false)
+	a.nvim_win_set_option(float_preview_win, "signcolumn", "no")
+	a.nvim_win_set_option(float_preview_win, "foldlevel", 50)
 
-	-- ハイライトを設定
 	vim.cmd([[setlocal winhl=Normal:LirFloatNormal,EndOfBuffer:LirFloatNormal]])
 
-	setup_autocmd(lir_bufnr, float_win)
+	setup_autocmd(lir_bufnr)
 	a.nvim_set_current_win(lir_win)
 
-	-- 行をセット
 	M.setlines(filepath)
 end
 
 function M.setlines(filepath)
-	if not a.nvim_win_is_valid(float_win) then
+	if not a.nvim_win_is_valid(float_preview_win) then
 		M.preview()
 		return
 	end
-	-- パスが渡されたら、それを使って、渡されなかったら、 lir から取得する
+  -- autocmd で取得する
 	filepath = vim.F.if_nil(filepath, lir.get_context():current().fullpath)
 
-	-- ディレクトリなら、終わり
+	-- ディレクトリなら、そのディレクトリ内の内容を表示
+  -- 本当は、edit でやりたかったけど、なんかうまくいかないから、いったんは独自実装
 	if lir.get_context():current().is_dir then
-		a.nvim_buf_set_lines(float_bufnr, 0, -1, false, { "" })
-		-- a.nvim_buf_set_option(bufnr, "filetype", 'lir')
+    local files = readdir(filepath)
+    table.sort(files, sort)
+		a.nvim_buf_set_lines(float_preview_bufnr, 0, -1, false, vim.tbl_map(function (item)
+      return item.display
+		end, files))
+    a.nvim_win_call(float_preview_win, function()
+      highlight.update_highlight(files)
+      -- treesiter はOFF
+      vim.treesitter.stop()
+    end)
+
+    vim.api.nvim_buf_set_option(float_preview_bufnr, "syntax", "off")
 		return
 	end
 
-	read_file_setlines(filepath, float_bufnr)
+	read_file_setlines(filepath, float_preview_bufnr)
 end
 
 function M.close()
-	pcall(vim.api.nvim_win_close, float_win, true)
+	pcall(vim.api.nvim_win_close, float_preview_win, true)
 end
 
 function _G._LirFloatPreviewSetupAutocmd()
-	if not float_win then
+	if not float_preview_win then
 		return
 	end
-	setup_autocmd(vim.fn.bufnr(), float_win)
+	setup_autocmd(vim.fn.bufnr())
 end
 
 vim.cmd([[augroup lir-float-preview]])
 vim.cmd([[  autocmd!]])
 vim.cmd([[  autocmd FileType lir :lua _LirFloatPreviewSetupAutocmd()]])
 vim.cmd([[augroup END]])
+
+
+-- public functions
+function M.toggle()
+	preview_enable = not preview_enable
+	M.preview()
+end
+
+function M.on()
+	preview_enable = true
+	M.preview()
+end
+
+function M.off()
+	preview_enable = false
+  M.close()
+end
+
 
 return M
