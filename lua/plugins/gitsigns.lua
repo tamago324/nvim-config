@@ -6,4 +6,11 @@ end
 
 -- http://www.shurey.com/js/works/unicode.html
 
-require("gitsigns").setup()
+require("gitsigns").setup({
+  current_line_blame = true, -- これを有効にする
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = 'eol', -- 'eol' で行末に表示
+    delay = 500,           -- カーソルを止めてから表示されるまでのミリ秒
+  },
+})

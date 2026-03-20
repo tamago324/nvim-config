@@ -154,18 +154,16 @@ cmp.setup({
 		}),
 	},
 
-	window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered()
-		-- completion = {
-		-- 	border = "rounded",
-		-- 	scrollbar = "",
-		-- },
-		-- documentation = {
-		-- 	border = "rounded",
-		-- 	scrollbar = "",
-		-- },
-	},
+  window = {
+    completion = {
+      border = 'rounded', -- 'single', 'double', 'rounded', 'solid', 'shadow' が指定可能
+      winhighlight = 'Normal:Normal,Normal:Normal,CursorLine:Visual,Search:None',
+    },
+    documentation = {
+      border = 'rounded',
+      winhighlight = 'Normal:Normal,Normal:Normal,CursorLine:Visual,Search:None',
+    },
+  },
 })
 
 -- deoledit
@@ -236,6 +234,24 @@ cmp.setup({
 --     { name = 'cmdline' }
 --   }
 -- })
+  -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    }),
+    matching = { disallow_symbol_nonprefix_matching = false }
+  })
 
 -- require("cmp_deol_history.suggestions").setup({
 -- 	hl_group = "Comment",

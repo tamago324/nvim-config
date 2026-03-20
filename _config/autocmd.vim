@@ -484,8 +484,8 @@ function! s:my_ft_python() abort
   "
   " imap <silent> <buffer> <expr> <Space> <SID>smart_auto_mappings()
 
-  nnoremap <buffer><silent> ,f :<C-u>call deol#send(getline('.'))<CR>
-  vnoremap <buffer><silent> ,f :<C-u>call <SID>python_send_lines()<CR>
+  "nnoremap <buffer><silent> ,f :<C-u>call deol#send(getline('.'))<CR>
+  "vnoremap <buffer><silent> ,f :<C-u>call <SID>python_send_lines()<CR>
   vnoremap <buffer><silent> <Space>rf :<C-u>silent !black %<CR>
 endfunction
 

@@ -67,3 +67,4 @@ nlspsettings.setup({
   open_strictly = true
 })
 
+require("typescript-tools").setup({})

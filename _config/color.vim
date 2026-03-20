@@ -109,5 +109,4 @@ let g:edge_disable_italic_comment = 1
 let g:edge_menu_selection_background = 'blue'
 " let g:edge_disable_terminal_colors = 1
 
-
-colorscheme edge
+colorscheme catppuccin-macchiato

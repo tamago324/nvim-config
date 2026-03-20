@@ -64,6 +64,9 @@ nnoremap st <C-w>T
 " 新規タブ
 nnoremap so <Cmd>tabedit<CR>
 
+" ターミナル
+nnoremap sx <Cmd>new <Bar> terminal<CR>
+
 " タブ間の移動
 nnoremap gt <Nop>
 nnoremap gT <Nop>
@@ -71,6 +74,7 @@ nnoremap gT <Nop>
 " nnoremap <C-h> gT
 nnoremap <End> gt
 nnoremap <Home> gT
+
 
 " 先頭と末尾
 nnoremap <Space>h ^
@@ -207,8 +211,8 @@ function! s:toggle_quickfix() abort
 endfunction
 command! ToggleQuickfix call <SID>toggle_quickfix()
 
-nnoremap <PageUp> <Cmd>cprev<CR>
-nnoremap <PageDown> <Cmd>cnext<CR>
+nnoremap <C-up> <Cmd>cprev<CR>
+nnoremap <C-down> <Cmd>cnext<CR>
 " " 先頭
 " nnoremap [[ <Cmd>cfirst<CR>
 
@@ -254,8 +258,9 @@ function! s:ripgrep(text) abort
 endfunction
 
 command! -nargs=1 Rg call <SID>ripgrep(<q-args>)
-" nnoremap <Space>fg :<C-u>Rg 
-nnoremap ,g :<C-u>Rg 
+nnoremap <Space>fg :<C-u>Rg 
+"nnoremap ,g :<C-u>Rg 
+xnoremap <Space>fg "hy:Rg <C-r>h<CR>
 
 
 " nnoremap <Space>d. <Cmd>call vimrc#drop_or_tabedit('~/dict')<CR>
@@ -509,3 +514,28 @@ endfunction
 
 nnoremap <silent> <C-o> <Cmd>call <SID>jump('prev')<CR>
 nnoremap <silent> <Tab> <Cmd>call <SID>jump("next")<CR>
+
+" git_root からの相対パスをコピー
+function! s:copy_relative_path() abort
+  let l:git_root = systemlist('git rev-parse --show-toplevel')[0]
+  let l:file_path = expand('%:p')
+  let l:relative_path = fnamemodify(l:file_path, ':~:.' .. l:git_root)
+  call setreg('+', l:relative_path)
+  echo 'Copied: ' .. l:relative_path
+endfunction
+
+" ビジュアルモード用：git_root からの相対パス + 行番号をコピー
+function! s:copy_relative_path_with_lines() abort
+  let l:git_root = systemlist('git rev-parse --show-toplevel')[0]
+  let l:file_path = expand('%:p')
+  let l:relative_path = fnamemodify(l:file_path, ':~:.' .. l:git_root)
+  let l:start_row = line("'<")
+  let l:end_row = line("'>")
+  let l:result = l:relative_path .. ':L' .. l:start_row .. '-L' .. l:end_row
+  call setreg('+', l:result)
+  echo 'Copied: ' .. l:result
+  call feedkeys("\<Esc>", 'n')
+endfunction
+
+nnoremap <A-c> <Cmd>call <SID>copy_relative_path()<CR>
+xnoremap <A-c> <Cmd>call <SID>copy_relative_path_with_lines()<CR>

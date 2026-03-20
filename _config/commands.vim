@@ -78,3 +78,5 @@ command! CopyKeymap call <SID>copy_prk_firmware()
 function! s:copy_prk_firmware() abort
   echo system('cp ' .. expand('%:p') .. ' /run/media/tamago324/PRKFirmware/keymap.rb')
 endfunction
+
+command! TaskRun lua require("telescope").extensions.vstask.tasks()

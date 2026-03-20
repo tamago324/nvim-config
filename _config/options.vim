@@ -138,7 +138,7 @@ set cedit=\<C-y>
 set list
 set listchars=
 " 改行記号
-set listchars+=eol:↲
+"set listchars+=eol:↲
 " タブ
 set listchars+=tab:»\ 
 " 右が省略されている
@@ -158,7 +158,8 @@ set shortmess+=c
 " algorithm:histogram: histogram差分アルゴリズム を使用する
 " indent-heuristic: 内部 diff のインデントヒューリスティック？を使う
 if !has('nvim')
-  set diffopt=internal,filler,algorithm:histogram,indent-heuristic
+  "set diffopt=internal,filler,algorithm:histogram,indent-heuristic
+  set diffopt=internal,filler,closeoff,linematch:60
 endif
 " 垂直に分割する
 set diffopt+=vertical

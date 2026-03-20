@@ -21,12 +21,11 @@ Plug 'thinca/vim-quickrun'
   Plug 'lambdalisue/vim-quickrun-neovim-job'
 Plug 'simeji/winresizer'
 
-" terminal (weztermとの連携)
-Plug 'mrjones2014/smart-splits.nvim'
+" terminal (weztermとの連携) 遅延が気になるため、OFFにしておく
+"Plug 'mrjones2014/smart-splits.nvim'
 
 " color
-Plug 'sainnhe/edge'
-Plug 'projekt0n/github-nvim-theme'
+Plug 'catppuccin/nvim', { 'branch': 'vim', 'as': 'catppuccin' }
 
 " statusline
 Plug 'nvim-lualine/lualine.nvim'
@@ -104,6 +103,7 @@ Plug 'rachartier/tiny-inline-diagnostic.nvim' " ErrorLens
 Plug 'lewis6991/hover.nvim' " hover
 Plug 'smjonas/inc-rename.nvim' " rename
 Plug 'aznhe21/actions-preview.nvim' " code actions + telescope
+Plug 'pmizio/typescript-tools.nvim'
 
 " fizzy finder
 Plug 'nvim-telescope/telescope.nvim'
@@ -137,8 +137,9 @@ Plug 'notomo/promise.nvim'
 Plug 'vim-denops/denops.vim'
 
 " markdown
-"Plug 'MeanderingProgrammer/render-markdown.nvim'
 Plug 'OXY2DEV/markview.nvim'
+Plug 'preservim/vim-markdown'
+Plug 'bullets-vim/bullets.vim'
 
 " 裏で動いてくれるやつ
 Plug 'kana/vim-niceblock'
@@ -170,5 +171,7 @@ Plug 'Bakudankun/BackAndForward.vim'
 Plug 'thinca/vim-ref'
 Plug 'hrsh7th/vim-gindent'
 
+Plug 'EthanJWright/vs-tasks.nvim'
+Plug 't9md/vim-quickhl'
 
 call plug#end()

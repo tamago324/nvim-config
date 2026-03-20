@@ -53,3 +53,11 @@ let g:vim_plugin_config_dir = g:vimfiles_path .. '/_config/plugins'
 
 runtime! _config/**/*.vim
 lua require('init')
+
+" work
+runtime! _config/work/*.vim
+lua << EOF
+local has_work, _ = pcall(require, 'work.init')
+if has_work then
+end
+EOF
