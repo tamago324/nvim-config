@@ -46,6 +46,10 @@ local explorer = function()
 	local ctx = lir.get_context()
 	if vim.fn.has("win64") == "1" then
 		vim.fn.system(string.format("start %s", ctx.dir))
+  elseif os.getenv('WSL_DISTRO_NAME') ~= '' then
+    local win_path = vim.fn.system({ "wslpath", "-w", ctx.dir })
+    -- バックスラッシュを正しく考慮できるように、systemlist を使う
+		vim.fn.systemlist({"explorer.exe", win_path})
 	else
 		vim.fn.system(string.format("xdg-open %s", ctx.dir))
 	end
@@ -73,14 +77,8 @@ local open = function()
 	if vim.w.lir_is_float and not ctx:is_dir_current() then
 		-- 閉じてから開く
 		actions.quit()
-
-		if vim.bo.filetype == "deoledit" then
-			-- もし、deoledit ならその上のバッファに移動しておく
-			-- これにより、上のバッファで開ける
-			local winnr = vim.api.nvim_win_get_number(0)
-			local winid = vim.fn.win_getid(winnr - 1)
-			vim.api.nvim_set_current_win(winid)
-		end
+    -- float を開いたときのウィンドウに移動する
+    vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
 	end
 
 	local cmd = "edit"
@@ -92,6 +90,8 @@ end
 local quit = function()
 	states.last_dir = lir.get_context().dir
 	actions.quit()
+  -- float を開いたときのウィンドウに移動する
+  vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
 end
 
 -- -- 対象のファイルに対応する tsserver が起動しているかどうかをチェックする
@@ -101,7 +101,10 @@ end
 
 require("lir").setup({
 	hide_cursor = vim.fn.has("win64") == 0,
-  ignore = {},
+  ignore = {
+    "__pycache__",
+    "node_modules"
+  },
 	show_hidden_files = false,
   devicons = {
     enable = true,
@@ -114,7 +117,7 @@ require("lir").setup({
 		["r"] = nop,
 		-- ["p"] = nop,
 		["i"] = nop,
-		["I"] = nop,
+		-- ["I"] = nop,
 		["x"] = nop,
 
 		["<CR>"] = function()
@@ -229,7 +232,8 @@ require("lir").setup({
 		--   vim.cmd("Fin -matcher=fuzzy")
 		-- end
 
-		["p"] = xpreview.toggle
+		["p"] = xpreview.toggle,
+    ["I"] = xactions.image_paste
 	},
 	float = {
 		winblend = 0,

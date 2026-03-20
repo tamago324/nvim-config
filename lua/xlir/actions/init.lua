@@ -6,4 +6,5 @@ return {
 	cd = require("xlir.actions.cd"),
 	open_deol = require("xlir.actions.open_deol"),
 	goto_git_root = require("xlir.actions.goto_git_root"),
+  image_paste = require('xlir.actions.image_paste')
 }
