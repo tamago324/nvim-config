@@ -155,7 +155,7 @@ require("lir").setup({
 		-- ["tr"] = require("xlir.actions.simple_tsserver_rename").rename,
 		["@"] = xactions.cd,
 
-		["<A-d>"] = xactions.open_deol,
+		-- ["<A-d>"] = xactions.open_deol,
 
 		["Y"] = actions.yank_path,
 		["."] = actions.toggle_show_hidden,
@@ -195,11 +195,11 @@ require("lir").setup({
 		-- ["D"] = actions.delete,
 		-- python3 -m pip install --user --upgrade neovim-remote
 		-- ["M"] = mmv,
-		["M"] = function()
-			states.mod_mode = not states.mod_mode
-			actions.reload()
-			pprint(states.mod_mode and "並び順: 更新順" or "並び順: 標準")
-		end,
+		-- ["M"] = function()
+		-- 	states.mod_mode = not states.mod_mode
+		-- 	actions.reload()
+		-- 	pprint(states.mod_mode and "並び順: 更新順" or "並び順: 標準")
+		-- end,
 
 		["dd"] = actions.wipeout,
 
