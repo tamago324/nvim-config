@@ -52,3 +52,5 @@ augroup MyFugitive
   autocmd!
   autocmd FileType fugitive call s:fugitive_my_settings()
 augroup END
+
+command! GitAdd execute 'Git add %'

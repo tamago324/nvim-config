@@ -3,6 +3,7 @@ local finders = require("telescope.finders")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local entry_display = require("telescope.pickers.entry_display")
+local previewers = require('telescope.previewers')
 local strdisplaywidth = require("plenary.strings").strdisplaywidth
 
 local find_git_ancestor = require("lspconfig.util").find_git_ancestor
@@ -89,8 +90,9 @@ local gen_from_mru_better = function(opts)
 
 			filename = entry,
 			value = entry,
-			-- バッファ番号、ファイル名のみ、検索できるようにする
-			ordinal = file_name,
+			-- xxx: バッファ番号、ファイル名のみ、検索できるようにする
+      -- ディレクトリ/ファイルで検索できるようにする
+			ordinal = entry,
 			display = make_display,
 
 			-- bufnr = entry.bufnr,
@@ -148,9 +150,7 @@ return function(opts)
 		}),
 		-- layout_strategy = 'vertical',
 		file_ignore_patterns = { "^/tmp" },
-		-- previewer = previewers.cat.new({}),
-		previewer = false,
-		-- sorter = conf.generic_sorter({}),
+		previewer = previewers.vim_buffer_cat.new({}),
 		sorter = E.get_fzy_sorter_use_list({
 			list = xmru.list(),
 			get_needle = function(entry)

@@ -5,5 +5,7 @@ let g:backandforward_config = {}
 let g:backandforward_config.auto_map = v:false
 let g:backandforward_config.define_commands = v:false
 
-nmap <Left> <Plug>(backandforward-back)
-nmap <Right> <Plug>(backandforward-forward)
+" yankround とのキーマップに合わせるため、向こうで設定
+
+"nmap <Left> <Plug>(backandforward-back)
+"nmap <Right> <Plug>(backandforward-forward)

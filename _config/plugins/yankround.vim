@@ -2,15 +2,6 @@ scriptencoding utf-8
 
 UsePlugin 'yankround.vim'
 
-" nmap p <Plug>(yankround-p)
-" xmap p <Plug>(yankround-p)
-" nmap P <Plug>(yankround-P)
-" nmap gp <Plug>(yankround-gp)
-" xmap gp <Plug>(yankround-gp)
-" nmap gP <Plug>(yankround-gP)
-" nmap <C-p> <Plug>(yankround-prev)
-" nmap <C-n> <Plug>(yankround-next)
-
 let g:yankround_max_history   = 10000
 let g:yankround_use_region_hl = 1
 let g:yankround_dir           = '~/.cache/nvim/yankround'
@@ -19,8 +10,11 @@ nmap p <Plug>(yankround-p)
 xmap p <Plug>(yankround-p)
 nmap P <Plug>(yankround-P)
 
-nmap <silent> <expr> <C-p> yankround#is_active() ? '<Plug>(yankround-prev)' : '<C-p>'
-nmap <silent> <expr> <C-n> yankround#is_active() ? '<Plug>(yankround-next)' : "<C-n>"
+nmap <silent> <expr> <Left> yankround#is_active() ? '<Plug>(yankround-prev)' : '<Plug>(backandforward-back)'
+nmap <silent> <expr> <Right> yankround#is_active() ? '<Plug>(yankround-next)' : "<Plug>(backandforward-forward)"
+
+"nmap <Left> <Plug>(backandforward-back)
+"nmap <Right> <Plug>(backandforward-forward)
 
 function! s:keymap(force_map, modes, ...) abort
   let arg = join(a:000, ' ')

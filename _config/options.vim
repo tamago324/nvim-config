@@ -333,3 +333,6 @@ set showbreak=›\
 
 " nvim-scrollbar で zj が入力されてしまうため、それの対処
 set nofoldenable
+
+" https://github.com/Bakudankun/BackAndForward.vim
+set jumpoptions+=stack

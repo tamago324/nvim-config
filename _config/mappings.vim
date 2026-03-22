@@ -63,6 +63,8 @@ nnoremap st <C-w>T
 
 " 新規タブ
 nnoremap so <Cmd>tabedit<CR>
+" 前のタブに戻る
+nnoremap si <Cmd>tabnext #<CR>
 
 " ターミナル
 nnoremap sx <Cmd>new <Bar> terminal<CR>
@@ -132,13 +134,14 @@ nnoremap <Space>/ /\V<C-r>+<CR>
 
 " 全行で置換
 nnoremap <Space>s<Space> :<C-u>%s///g<Left><Left>
+nnoremap s<Space>s :<C-u>%s///g<Left><Left>
 
 " カレントバッファを検索
 nnoremap <Space>gg :vimgrep // %:p<Left><Left><Left><Left><Left>
 
 " help
-xnoremap <A-h> "hy:help <C-r>h<CR>
-nnoremap <A-h> :h 
+xnoremap <A-m> "hy:help <C-r>h<CR>
+nnoremap <A-m> :h 
 xnoremap K     <Nop>
 
 " クリップボードの貼り付け
@@ -211,8 +214,8 @@ function! s:toggle_quickfix() abort
 endfunction
 command! ToggleQuickfix call <SID>toggle_quickfix()
 
-nnoremap <C-up> <Cmd>cprev<CR>
-nnoremap <C-down> <Cmd>cnext<CR>
+nnoremap <C-up> <Cmd>cprev<CR><Plug>Pulse
+nnoremap <C-down> <Cmd>cnext<CR><Plug>Pulse
 " " 先頭
 " nnoremap [[ <Cmd>cfirst<CR>
 
@@ -515,6 +518,11 @@ endfunction
 nnoremap <silent> <C-o> <Cmd>call <SID>jump('prev')<CR>
 nnoremap <silent> <Tab> <Cmd>call <SID>jump("next")<CR>
 
+nnoremap <A-c> <Cmd>call <SID>copy_relative_path()<CR>
+xnoremap <A-c> <Cmd>call <SID>copy_relative_path_with_lines()<CR>
+nnoremap <A-x> <Cmd>call <SID>send_relative_path_with_lines()<CR>
+xnoremap <A-x> <Cmd>call <SID>send_relative_path_with_lines()<CR>
+
 " git_root からの相対パスをコピー
 function! s:copy_relative_path() abort
   let l:git_root = systemlist('git rev-parse --show-toplevel')[0]
@@ -525,17 +533,26 @@ function! s:copy_relative_path() abort
 endfunction
 
 " ビジュアルモード用：git_root からの相対パス + 行番号をコピー
-function! s:copy_relative_path_with_lines() abort
+function! s:get_relative_path_with_lines() abort
   let l:git_root = systemlist('git rev-parse --show-toplevel')[0]
   let l:file_path = expand('%:p')
   let l:relative_path = fnamemodify(l:file_path, ':~:.' .. l:git_root)
-  let l:start_row = line("'<")
-  let l:end_row = line("'>")
-  let l:result = l:relative_path .. ':L' .. l:start_row .. '-L' .. l:end_row
+  let l:start_row = getpos('v')[1]
+  let l:end_row = getpos('.')[1]
+  if l:start_row > l:end_row
+    let [l:start_row, l:end_row] = [l:end_row, l:start_row]
+  endif
+  return l:relative_path .. ':L' .. l:start_row .. '-L' .. l:end_row
+endfunction
+
+function! s:copy_relative_path_with_lines() abort
+  let l:result = s:get_relative_path_with_lines()
   call setreg('+', l:result)
   echo 'Copied: ' .. l:result
   call feedkeys("\<Esc>", 'n')
 endfunction
 
-nnoremap <A-c> <Cmd>call <SID>copy_relative_path()<CR>
-xnoremap <A-c> <Cmd>call <SID>copy_relative_path_with_lines()<CR>
+function! s:send_relative_path_with_lines() abort
+  call luaeval('require("xcopilot").send_text(_A)', s:get_relative_path_with_lines() .. ' ')
+  call feedkeys("\<Esc>", 'n')
+endfunction

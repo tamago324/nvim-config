@@ -5,6 +5,7 @@ local lir = require("lir")
 local config = require("lir.config")
 local devicons = require("lir.devicons")
 local highlight = require('lir.highlight')
+local actions = require('lir.actions')
 local uv = vim.loop
 
 local Promise = require("promise")
@@ -241,11 +242,15 @@ vim.cmd([[augroup END]])
 function M.toggle()
 	preview_enable = not preview_enable
 	M.preview()
+  -- 描画のずれを直す (なぜか、描画がずれる。。。)
+  actions.reload()
 end
 
 function M.on()
 	preview_enable = true
 	M.preview()
+  -- 描画のずれを直す (なぜか、描画がずれる。。。)
+  actions.reload()
 end
 
 function M.off()

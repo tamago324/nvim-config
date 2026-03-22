@@ -356,6 +356,8 @@ function! s:my_ft_qf() abort
   nnoremap <buffer> <C-j> <Cmd>call search('^[^\\|]')<CR>
   nnoremap <buffer> <C-k> <Cmd>call search('^[^\\|]', 'b')<CR>
 
+  nnoremap <buffer> <Space>ff :Cfilter
+
   " quickfix とじる
   " nnoremap <buffer> <A-d> <Cmd>lclose<CR>
 
@@ -1060,3 +1062,18 @@ endfunction
 function! s:my_ft_typescript() abort
   nnoremap <buffer> <Space>rr <Cmd>call DenoRun()<CR>
 endfunction
+
+
+" Copilot CLI とかで変更されたら通知する
+function! CheckExternalFileChange() abort
+  if !&modified
+    checktime
+  endif
+endfunction
+
+autocmd MyAutoCmd CursorHold,FocusGained * call CheckExternalFileChange()
+autocmd MyAutoCmd FileChangedShellPost * lua vim.notify(
+      \ "Buffer reloaded (external change)",
+      \ vim.log.levels.INFO,
+      \ { title = "External Edit" }
+      \ )

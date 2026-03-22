@@ -107,10 +107,11 @@ Plug 'pmizio/typescript-tools.nvim'
 
 " fizzy finder
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-telescope/telescope-ghq.nvim'
 Plug 'danielfalk/smart-open.nvim'
 Plug 'kkharji/sqlite.lua'
+"Plug 'natecraddock/telescope-zf-native.nvim'
 
 " formatter
 Plug 'stevearc/conform.nvim'
@@ -147,7 +148,9 @@ Plug 'vim-jp/vimdoc-ja'
 Plug 'junegunn/vim-plug'
 " Plug 'kdav5758/NoCLC.nvim'
 Plug 'lambdalisue/edita.vim'
-" Plug 'ludovicchabant/vim-gutentags'
+" sudo apt install universal-ctags global
+"Plug 'ludovicchabant/vim-gutentags'
+"Plug 'dhananjaylatkar/cscope_maps.nvim'
 Plug 'lambdalisue/vim-protocol'
 Plug 'mattn/vim-findroot'
 Plug 'nacro90/numb.nvim'
@@ -160,6 +163,9 @@ Plug 'lambdalisue/vim-backslash'
 " Plug 'mvllow/modes.nvim'
 " Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'rcarriga/nvim-notify'
+"Plug 'pocco81/auto-save.nvim'
+Plug 'uga-rosa/ccc.nvim'
+
 
 " 便利
 Plug 'thinca/vim-prettyprint', { 'on': ['PP', 'PrettyPrint'] }
@@ -175,5 +181,9 @@ Plug 'EthanJWright/vs-tasks.nvim'
 Plug 't9md/vim-quickhl'
 
 Plug 'stevearc/overseer.nvim'
+
+Plug 'razak17/tailwind-fold.nvim'
+
+
 
 call plug#end()

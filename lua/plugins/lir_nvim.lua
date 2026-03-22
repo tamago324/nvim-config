@@ -46,10 +46,10 @@ local explorer = function()
 	local ctx = lir.get_context()
 	if vim.fn.has("win64") == "1" then
 		vim.fn.system(string.format("start %s", ctx.dir))
-  elseif os.getenv('WSL_DISTRO_NAME') ~= '' then
-    local win_path = vim.fn.system({ "wslpath", "-w", ctx.dir })
-    -- バックスラッシュを正しく考慮できるように、systemlist を使う
-		vim.fn.systemlist({"explorer.exe", win_path})
+	elseif os.getenv("WSL_DISTRO_NAME") ~= "" then
+		local win_path = vim.fn.system({ "wslpath", "-w", ctx.dir })
+		-- バックスラッシュを正しく考慮できるように、systemlist を使う
+		vim.fn.systemlist({ "explorer.exe", win_path })
 	else
 		vim.fn.system(string.format("xdg-open %s", ctx.dir))
 	end
@@ -77,8 +77,8 @@ local open = function()
 	if vim.w.lir_is_float and not ctx:is_dir_current() then
 		-- 閉じてから開く
 		actions.quit()
-    -- float を開いたときのウィンドウに移動する
-    vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
+		-- float を開いたときのウィンドウに移動する
+		vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
 	end
 
 	local cmd = "edit"
@@ -90,8 +90,8 @@ end
 local quit = function()
 	states.last_dir = lir.get_context().dir
 	actions.quit()
-  -- float を開いたときのウィンドウに移動する
-  vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
+	-- float を開いたときのウィンドウに移動する
+	vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
 end
 
 -- -- 対象のファイルに対応する tsserver が起動しているかどうかをチェックする
@@ -101,15 +101,15 @@ end
 
 require("lir").setup({
 	hide_cursor = vim.fn.has("win64") == 0,
-  ignore = {
-    "__pycache__",
-    "node_modules"
-  },
+	ignore = {
+		"__pycache__",
+		"node_modules",
+	},
 	show_hidden_files = false,
-  devicons = {
-    enable = true,
-    highlight_dirname = false
-  },
+	devicons = {
+		enable = true,
+		highlight_dirname = false,
+	},
 	mappings = {
 		-- ["u"] = nop,
 		["U"] = nop,
@@ -129,7 +129,7 @@ require("lir").setup({
 		["<C-s>"] = actions.split,
 		["<C-v>"] = actions.vsplit,
 		["<C-t>"] = actions.tabedit,
-		["<C-g>"] = xactions.goto_git_root,
+		["gf"] = xactions.goto_git_root,
 		["h"] = actions.up,
 		["q"] = function()
 			states.mod_mode = false
@@ -158,7 +158,10 @@ require("lir").setup({
 		-- ["tr"] = require("xlir.actions.simple_tsserver_rename").rename,
 		["@"] = xactions.cd,
 
-		-- ["<A-d>"] = xactions.open_deol,
+		-- ["<A-d>"] = function()
+		-- 	local dir = lir.get_context().dir
+		-- 	vim.fn.system("wezterm.exe cli split-pane --cwd " .. dir)
+		-- end,
 
 		["Y"] = actions.yank_path,
 		["."] = actions.toggle_show_hidden,
@@ -233,7 +236,8 @@ require("lir").setup({
 		-- end
 
 		["p"] = xpreview.toggle,
-    ["I"] = xactions.image_paste
+		["I"] = xactions.image_paste,
+		["-"] = xactions.git.stage_toggle,
 	},
 	float = {
 		winblend = 0,
@@ -371,10 +375,9 @@ _G.x_lir_init = function()
 		dir = vim.fn.expand("~")
 	end
 	require("lir.float").toggle(dir)
-  xpreview.on()
+	xpreview.on()
 end
 
 require("xlir.persist_history").setup()
 
 vim.api.nvim_set_keymap("n", "<C-e>", "<Cmd>lua _G.x_lir_init()<CR>", { silent = true, noremap = true })
-
