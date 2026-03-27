@@ -65,6 +65,10 @@ let g:quickrun_config = {
 \   'typescriptreact': {
 \       'command': 'pnpm',
 \       'cmdopt': 'jest %s',
+\   },
+\   'go': {
+\       'command': 'go',
+\       'exec': ['%c run %s'],
 \   }
 \}
 

@@ -179,7 +179,11 @@ function! s:new_tmp_file() abort
 
   " もし空ならそのバッファを使う
   let l:cmd = line('$') ==# 1 && getline(1) && !&modified ? 'e' : 'new'
-  exec l:cmd .. ' '.. tempname()
+  let l:ext = ''
+  if l:ft ==# 'go'
+    let l:ext = '.go'
+  endif
+  exec l:cmd .. ' '.. tempname() .. l:ext
   exec 'setfiletype ' .. l:ft
 endfunction
 

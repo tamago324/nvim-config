@@ -24,10 +24,40 @@ vim.keymap.set("n", "<Space>do", function()
 	vim.cmd([[DiffviewOpen]])
 end, { noremap = true })
 
+-- コンフリクト解消
+--   h <<< を採用
+--   l >>> を採用
+--   a 両方採用
+--   b どちらも不採用
+
 require("diffview").setup({
 	default_args = {
 		DiffviewOpen = { "--imply-local" },
 		DiffviewFileHistory = { "--no-merges" },
+	},
+	file_panel = {
+		listing_style = "tree", -- One of 'list' or 'tree'
+		tree_options = { -- Only applies when listing_style is 'tree'
+			flatten_dirs = true, -- Flatten dirs that only contain one single dir
+			folder_statuses = "only_folded", -- One of 'never', 'only_folded' or 'always'.
+		},
+		win_config = function()
+			local c = { type = "float" }
+			local editor_width = vim.o.columns
+			local editor_height = vim.o.lines
+			c.width = math.min(100, editor_width)
+			c.height = math.min(30, editor_height)
+			c.col = math.floor(editor_width * 0.5 - c.width * 0.5)
+			c.row = math.floor(editor_height * 0.8 - c.height * 0.5)
+			return c
+		end,
+	},
+	view = {
+		merge_tool = {
+			layout = "diff4_mixed",
+			disable_diagnostics = true,
+			winbar_info = true,
+		},
 	},
 	keymaps = {
 		disable_defaults = false, -- Disable the default keymaps
@@ -86,15 +116,19 @@ require("diffview").setup({
 				actions.next_conflict,
 				{ desc = "In the merge-tool: jump to the next conflict" },
 			},
+			-- h <<< を採用
+			-- l >>> を採用
+			-- a 両方採用
+			-- b どちらも不採用
 			{
 				"n",
-				",co",
+				",ch",
 				actions.conflict_choose("ours"),
 				{ desc = "Choose the OURS version of a conflict" },
 			},
 			{
 				"n",
-				",ct",
+				",cl",
 				actions.conflict_choose("theirs"),
 				{ desc = "Choose the THEIRS version of a conflict" },
 			},
@@ -113,13 +147,13 @@ require("diffview").setup({
 			{ "n", "dx", actions.conflict_choose("none"), { desc = "Delete the conflict region" } },
 			{
 				"n",
-				",cO",
+				",cL",
 				actions.conflict_choose_all("ours"),
 				{ desc = "Choose the OURS version of a conflict for the whole file" },
 			},
 			{
 				"n",
-				",cT",
+				",cL",
 				actions.conflict_choose_all("theirs"),
 				{ desc = "Choose the THEIRS version of a conflict for the whole file" },
 			},
@@ -316,22 +350,5 @@ require("diffview").setup({
 				{ desc = "Amend the last commit" },
 			},
 		},
-	},
-	file_panel = {
-		listing_style = "tree", -- One of 'list' or 'tree'
-		tree_options = { -- Only applies when listing_style is 'tree'
-			flatten_dirs = true, -- Flatten dirs that only contain one single dir
-			folder_statuses = "only_folded", -- One of 'never', 'only_folded' or 'always'.
-		},
-		win_config = function()
-			local c = { type = "float" }
-			local editor_width = vim.o.columns
-			local editor_height = vim.o.lines
-			c.width = math.min(100, editor_width)
-			c.height = math.min(30, editor_height)
-			c.col = math.floor(editor_width * 0.5 - c.width * 0.5)
-			c.row = math.floor(editor_height * 0.8 - c.height * 0.5)
-			return c
-		end,
 	},
 })
