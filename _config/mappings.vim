@@ -285,7 +285,7 @@ onoremap ' t'
 onoremap ` t`
 
 nnoremap <Space>dt <Cmd>windo diffthis<CR>
-nnoremap <Space>do <Cmd>windo diffoff<CR>
+nnoremap <Space>df <Cmd>windo diffoff<CR>
 
 nnoremap sq <Cmd>tabo<CR>
 nnoremap sc <Cmd>tabclose<CR>

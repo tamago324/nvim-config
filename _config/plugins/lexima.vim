@@ -105,6 +105,29 @@ call add(s:rules, { 'filetype': ['python'], 'char': "'", 'at': 'r\%#',  'input':
 " telescope
 " ====================
 " call add(s:rules, { 'filetype': ['TelescopePrompt'], 'char': "'", 'input': "\<Del>" })
+" /** と入力したら **/ を補完して間にカーソルを置く
+call lexima#add_rule({
+\   'char': ' ',
+\   'at': '/\*\*\%#',
+\   'input': ' **/<Left><Left><Left>',
+\   'filetype': ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
+\ })
+
+" /** の直後に Enter を押した時の挙動
+call lexima#add_rule({
+\   'char': '<Enter>',
+\   'at': '/\*\*\%#',
+\   'input': '<Enter>* <Enter>*/<Up>',
+\   'filetype': ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
+\ })
+
+" コメント行内で Enter を押した時に次の行にも * を付ける
+call lexima#add_rule({
+\   'char': '<Enter>',
+\   'at': '^\s*\* \%#',
+\   'input': '<Enter>* ',
+\   'filetype': ['javascript', 'typescript', 'javascriptreact', 'typescriptreact']
+\ })
 
 " ====================
 " rust

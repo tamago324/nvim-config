@@ -17,6 +17,7 @@ local M = {}
 local float_preview_bufnr = nil
 local float_preview_win = nil
 local preview_enable = false
+local initialized_autocmd = false
 
 local nvim011 = vim.fn.has "nvim-0.11" == 1
 local has_ts_parser = (nvim011 and vim.treesitter.language.add)
@@ -26,13 +27,25 @@ local has_ts_parser = (nvim011 and vim.treesitter.language.add)
 
 
 local function setup_autocmd(bufnr)
+  if initialized_autocmd then
+    return
+  end
+
   vim.cmd(
     string.format(
-      "autocmd WinClosed,BufLeave,BufDelete <buffer=%s> ++nested ++once :lua require('xlir.float_preview').close()",
+      "autocmd! WinClosed <buffer=%s> ++nested ++once :lua require('xlir.float_preview').close()",
       bufnr
     )
   )
-  vim.cmd(string.format("autocmd CursorMoved <buffer=%s> :lua pcall(require('xlir.float_preview').setlines)", bufnr))
+  -- vim.cmd(string.format("autocmd CursorHold <buffer=%s> :lua print('hogehoge')", bufnr))
+  -- vim.cmd(string.format("autocmd CursorHold <buffer=%s> :lua pcall(require('xlir.float_preview').setlines)", bufnr))
+
+  -- vim.cmd([[augroup lir-float-preview-setlines]])
+  -- vim.cmd([[  autocmd!]])
+  -- vim.cmd(string.format([[autocmd CursorMoved <buffer=%s> :lua pcall(require('xlir.float_preview').setlines)]], bufnr))
+  -- vim.cmd([[augroup END]])
+  initialized_autocmd = true
+  print("initialized")
 end
 
 local function split(s, sep, plain, opts)
@@ -132,6 +145,7 @@ end
 
 function M.preview()
   if not preview_enable then
+    print("close YYY")
     return M.close()
   end
 
@@ -184,49 +198,74 @@ function M.preview()
   a.nvim_win_set_option(float_preview_win, "signcolumn", "no")
   a.nvim_win_set_option(float_preview_win, "foldlevel", 50)
 
-  vim.cmd([[setlocal winhl=Normal:LirFloatNormal,EndOfBuffer:LirFloatNormal]])
+  a.nvim_win_set_var(float_preview_win, "lir_float_preview_win", true)
 
-  setup_autocmd(lir_bufnr)
+  vim.cmd([[setlocal winhl=Normal:LirFloatNormal,EndOfBuffer:LirFloatNormal]])
+  print(a.nvim_get_current_win())
+  vim.cmd('e ' .. filepath)
+
   a.nvim_set_current_win(lir_win)
 
-  M.setlines(filepath)
+  if not initialized_autocmd then
+    print("hoge 2")
+    setup_autocmd(lir_bufnr)
+  end
 end
 
 function M.setlines(filepath)
-  if not a.nvim_win_is_valid(float_preview_win) then
-    M.preview()
-    return
-  end
-  -- autocmd で取得する
+  -- if not a.nvim_win_is_valid(float_preview_win) then
+  --   M.preview()
+  --   return
+  -- end
+
+  -- autocmd 用
   filepath = vim.F.if_nil(filepath, lir.get_context():current().fullpath)
-
-  -- ディレクトリなら、そのディレクトリ内の内容を表示
-  -- 本当は、edit でやりたかったけど、なんかうまくいかないから、いったんは独自実装
-  if lir.get_context():current().is_dir then
-    local files = readdir(filepath)
-    table.sort(files, sort)
-    a.nvim_buf_set_lines(float_preview_bufnr, 0, -1, false, vim.tbl_map(function(item)
-      return item.display
-    end, files))
-    a.nvim_win_call(float_preview_win, function()
-      highlight.update_highlight(files)
-      -- treesiter はOFF
-      vim.treesitter.stop()
-    end)
-
-    vim.api.nvim_buf_set_option(float_preview_bufnr, "syntax", "off")
-    return
-  end
-
-  read_file_setlines(filepath, float_preview_bufnr)
+  pprint({ filepath = filepath, float_preview_win = float_preview_win })
+  vim.fn.win_execute(float_preview_win, [[e ]] .. filepath)
 end
+
+-- function M.setlines(filepath)
+--   if not a.nvim_win_is_valid(float_preview_win) then
+--     M.preview()
+--     return
+--   end
+--   -- autocmd で取得する
+--   filepath = vim.F.if_nil(filepath, lir.get_context():current().fullpath)
+--
+--   -- ディレクトリなら、そのディレクトリ内の内容を表示
+--   -- 本当は、edit でやりたかったけど、なんかうまくいかないから、いったんは独自実装
+--   if lir.get_context():current().is_dir then
+--     local files = readdir(filepath)
+--     table.sort(files, sort)
+--     a.nvim_buf_set_lines(float_preview_bufnr, 0, -1, false, vim.tbl_map(function(item)
+--       return item.display
+--     end, files))
+--     a.nvim_win_call(float_preview_win, function()
+--       highlight.update_highlight(files)
+--       -- treesiter はOFF
+--       vim.treesitter.stop()
+--     end)
+--
+--     vim.api.nvim_buf_set_option(float_preview_bufnr, "syntax", "off")
+--     return
+--   end
+--
+--   read_file_setlines(filepath, float_preview_bufnr)
+-- end
 
 function M.close()
   pcall(vim.api.nvim_win_close, float_preview_win, true)
+  print("close")
+  initialized_autocmd = false
+  print("hoge!? 4")
 end
 
 function _G._LirFloatPreviewSetupAutocmd()
   if not float_preview_win then
+    initialized_autocmd = false
+    return
+  end
+  if a.nvim_win_get_var(float_preview_win, "lir_float_preview_win") then
     return
   end
   setup_autocmd(vim.fn.bufnr())
@@ -255,6 +294,7 @@ end
 
 function M.off()
   preview_enable = false
+  initialized_autocmd = false
   M.close()
 end
 

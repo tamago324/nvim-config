@@ -1,7 +1,7 @@
 if vim.api.nvim_call_function("FindPlugin", { "nvim-treesitter" }) == 0 then
-	do
-		return
-	end
+  do
+    return
+  end
 end
 
 -- https://blog.atusy.net/2025/08/10/nvim-treesitter-main-branch/
@@ -26,6 +26,5 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 require('nvim-treesitter').install({
-  'python', 'typescript', 'vim', 'json', 'lua', 'javascript', 'html', 'markdown', 'tsx'
+  'python', 'typescript', 'vim', 'json', 'lua', 'javascript', 'html', 'markdown', 'tsx', 'sql'
 })
-

@@ -1,7 +1,7 @@
 if vim.api.nvim_call_function("FindPlugin", { "nvim-notify" }) == 0 then
-	do
-		return
-	end
+  do
+    return
+  end
 end
 
 local notify = require("notify")
@@ -62,7 +62,7 @@ local notify = require("notify")
 -- }
 
 notify.setup({
-	stages = "fade_in_slide_out",
+  stages = "fade_in_slide_out",
 })
 
-vim.notify = notify
+-- vim.notify = notify

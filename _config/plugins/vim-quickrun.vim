@@ -61,6 +61,10 @@ let g:quickrun_config = {
 \       'command': 'go',
 \       'cmdopt': 'test -v',
 \       'outputter': 'quickfix',
+\   },
+\   'typescriptreact': {
+\       'command': 'pnpm',
+\       'cmdopt': 'jest %s',
 \   }
 \}
 

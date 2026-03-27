@@ -183,7 +183,11 @@ Plug 't9md/vim-quickhl'
 Plug 'stevearc/overseer.nvim'
 
 Plug 'razak17/tailwind-fold.nvim'
+Plug 'WhoIsSethDaniel/mason-tool-installer.nvim'
 
+Plug 'mfussenegger/nvim-lint'
 
+Plug 'kndndrj/nvim-dbee'
+Plug 'MattiasMTS/cmp-dbee'
 
 call plug#end()
