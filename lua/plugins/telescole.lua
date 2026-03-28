@@ -106,6 +106,7 @@ require("telescope").setup({
 
 require("telescope").load_extension("smart_open")
 require("telescope").load_extension("vstask")
+require("telescope").load_extension("refactoring")
 
 local ext = function(name)
 	return require("plugins/telescope/" .. name)
@@ -187,3 +188,6 @@ vim.keymap.set("n", ",w", find_files, { noremap = true, silent = true })
 vim.keymap.set("n", ",s", "<Cmd>Telescope smart_open<CR>", { noremap = true, silent = true })
 vim.keymap.set("n", ",g", "<Cmd>Telescope command_history<CR>", { noremap = true, silent = true })
 -- vim.keymap.set("n", ",f", "<Cmd>Telescope buffers<CR>", { noremap = true, silent = true })
+vim.keymap.set({ "n", "x" }, "<Space>rf", function()
+	require("telescope").extensions.refactoring.refactors()
+end)

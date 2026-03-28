@@ -13,7 +13,8 @@ call plug#begin(g:plug_install_dir)
 
 " 必須
 "Plug 'cohama/lexima.vim'
-Plug 'm4xshen/autoclose.nvim'
+"Plug 'm4xshen/autoclose.nvim'
+Plug 'windwp/nvim-autopairs'
 Plug 'svermeulen/vim-cutlass'
 Plug 'machakann/vim-sandwich'
 Plug 'kevinhwang91/nvim-bqf'
@@ -198,6 +199,10 @@ Plug 'andrewferrier/debugprint.nvim' " デバッグプリントを挿入
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 Plug 'ThePrimeagen/99'
 
+" 翻訳
 Plug 'uga-rosa/translate.nvim'
+
+" リファクタリング
+Plug 'ThePrimeagen/refactoring.nvim'
 
 call plug#end()

@@ -624,8 +624,8 @@ function! s:my_ft_lua() abort
   nnoremap <buffer><silent> <Space>vs. <Cmd>call LoadLuaScript()<CR>
 
   " nnoremap <buffer><silent> <Space>rr  :<C-u>luafile %<CR>
-  nnoremap <buffer><silent> <Space>rf <Cmd>call <SID>equal_format()<CR>
-  xnoremap <buffer><silent> <Space>rf <Cmd>call <SID>equal_format()<CR>
+  "nnoremap <buffer><silent> <Space>rf <Cmd>call <SID>equal_format()<CR>
+  "xnoremap <buffer><silent> <Space>rf <Cmd>call <SID>equal_format()<CR>
 
   nnoremap <buffer><silent> <Space>bf :<C-u>silent lmake\| lopen<CR>
 
@@ -684,7 +684,7 @@ function! s:equal_format() abort
   call winrestview(l:winview)
 endfunction
 function! s:my_ft_vim() abort
-  nnoremap <buffer><silent> <Space>rf <Cmd>call <SID>equal_format()<CR>
+  "nnoremap <buffer><silent> <Space>rf <Cmd>call <SID>equal_format()<CR>
 
   " if exists(':AlterCommand')
   "   call altercmd#define('<buffer>', 'so', 'so %')
