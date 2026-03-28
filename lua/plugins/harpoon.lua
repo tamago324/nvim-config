@@ -9,7 +9,11 @@ local harpoon = require("harpoon")
 -- REQUIRED
 harpoon:setup()
 
-vim.keymap.set("n", "<Space><CR>", function()
+-- vim.keymap.set("n", "<Space><CR>", function()
+-- 	harpoon.ui:toggle_quick_menu(harpoon:list())
+-- end)
+
+vim.keymap.set("n", "<Space>j", function()
 	harpoon.ui:toggle_quick_menu(harpoon:list())
 end)
 

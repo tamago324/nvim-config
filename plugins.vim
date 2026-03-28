@@ -12,7 +12,8 @@ packadd cfilter
 call plug#begin(g:plug_install_dir)
 
 " 必須
-Plug 'cohama/lexima.vim'
+"Plug 'cohama/lexima.vim'
+Plug 'm4xshen/autoclose.nvim'
 Plug 'svermeulen/vim-cutlass'
 Plug 'machakann/vim-sandwich'
 Plug 'kevinhwang91/nvim-bqf'
@@ -191,9 +192,12 @@ Plug 'mfussenegger/nvim-lint'
 Plug 'kndndrj/nvim-dbee'
 Plug 'MattiasMTS/cmp-dbee'
 
-Plug 'nvim-zh/colorful-winsep.nvim' " ウィンドウの区切りをいい感じにする
+"Plug 'nvim-zh/colorful-winsep.nvim' " ウィンドウの区切りをいい感じにする
 Plug 'andrewferrier/debugprint.nvim' " デバッグプリントを挿入
 
 Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
+Plug 'ThePrimeagen/99'
+
+Plug 'uga-rosa/translate.nvim'
 
 call plug#end()
