@@ -34,21 +34,6 @@ local function setup_autocmd(bufnr)
 	vim.cmd(string.format("autocmd CursorMoved <buffer=%s> :lua pcall(require('xlir.float_preview').setlines)", bufnr))
 end
 
-local function split(s, sep, plain, opts)
-	opts = opts or {}
-	local t = {}
-	for c in vim.gsplit(s, sep, plain) do
-		table.insert(t, c)
-		if opts.timeout then
-			local diff_time = (vim.loop.hrtime() - opts.start_time) / 1e6
-			if diff_time > opts.timeout then
-				return t
-			end
-		end
-	end
-	return t
-end
-
 local ts_highlight_on = function(bufnr, path)
 	-- treesitter を使って、ハイライトする
 	local ft = filetype.detect_from_extension(path)
@@ -64,19 +49,41 @@ local ts_highlight_on = function(bufnr, path)
 	end
 end
 
+local is_binary = function(filepath)
+	local fd = uv.fs_open(filepath, "r", 438)
+	if not fd then
+		return true
+	end
+	local chunk = uv.fs_read(fd, 1024, 0)
+	uv.fs_close(fd)
+	if chunk and chunk:find("\0", 1, true) then
+		return true
+	end
+
+	return false
+end
+
 local function read_file_setlines(filepath, bufnr)
-	local opts = {}
-	opts.start_time = vim.loop.hrtime()
-	opts.timeout = 100
+	-- バイナリはプレビューを表示しない
+	local stat = uv.fs_stat(filepath)
+	if not stat or stat.type ~= "file" or is_binary(filepath) then
+		a.nvim_buf_set_lines(bufnr, 0, -1, false, { "This is binary file!" })
+		return
+	end
+
+	-- 高さ分だけ読み取る
+	local height = 0
+	if float_preview_win and a.nvim_win_is_valid(float_preview_win) then
+		height = a.nvim_win_get_height(float_preview_win)
+	end
 
 	Promise.new(function(resolve)
-		Path:new(filepath):read(function(data)
-			resolve(filepath, data)
-		end)
+		local data = vim.fn.readfile(filepath, "", height > 0 and height or -1)
+		---@diagnostic disable-next-line: redundant-parameter
+		resolve(filepath, data)
 	end):next(vim.schedule_wrap(function(path, data)
-		local processed_data = split(data, "[\r]?\n", false, opts)
-		if processed_data then
-			a.nvim_buf_set_lines(bufnr, 0, -1, false, processed_data)
+		if data and #data > 0 then
+			a.nvim_buf_set_lines(bufnr, 0, -1, false, data)
 			ts_highlight_on(bufnr, path)
 		end
 	end))
