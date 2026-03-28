@@ -191,4 +191,9 @@ Plug 'mfussenegger/nvim-lint'
 Plug 'kndndrj/nvim-dbee'
 Plug 'MattiasMTS/cmp-dbee'
 
+Plug 'nvim-zh/colorful-winsep.nvim' " ウィンドウの区切りをいい感じにする
+Plug 'andrewferrier/debugprint.nvim' " デバッグプリントを挿入
+
+Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
+
 call plug#end()
