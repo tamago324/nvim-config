@@ -107,6 +107,7 @@ require("telescope").setup({
 require("telescope").load_extension("smart_open")
 require("telescope").load_extension("vstask")
 require("telescope").load_extension("refactoring")
+require("telescope").load_extension("luasnip")
 
 local ext = function(name)
 	return require("plugins/telescope/" .. name)

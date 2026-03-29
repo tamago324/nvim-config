@@ -115,23 +115,26 @@ Plug 'nvim-telescope/telescope-ghq.nvim'
 Plug 'danielfalk/smart-open.nvim'
 Plug 'kkharji/sqlite.lua'
 "Plug 'natecraddock/telescope-zf-native.nvim'
+Plug 'benfowler/telescope-luasnip.nvim'
 
 " formatter
 Plug 'stevearc/conform.nvim'
 
 " 補完
 Plug 'hrsh7th/nvim-cmp'
+Plug 'folke/lazydev.nvim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 "Plug 'tamago324/cmp-necosyntax'
 "Plug 'Shougo/neco-syntax'
-"Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'hrsh7th/cmp-nvim-lua'
 Plug 'ray-x/cmp-treesitter'
 
- Plug 'L3MON4D3/LuaSnip'
- Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'rafamadriz/friendly-snippets'
 
 " util
 Plug 'MunifTanjim/nui.nvim'

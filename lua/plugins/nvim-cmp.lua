@@ -5,6 +5,20 @@ if vim.api.nvim_call_function("FindPlugin", { "nvim-cmp" }) == 0 then
 end
 
 local cmp = require("cmp")
+local sources = {
+	{ name = "nvim_lsp" },
+	{ name = "luasnip" },
+	{ name = "buffer" },
+	{ name = "path" },
+	-- { name = "rg" },
+	{ name = "nvim_lua" },
+	{ name = "cmp-dbee" },
+	{ name = "treesitter" },
+}
+
+if has_plugin("lazydev.nvim") then
+	table.insert(sources, 1, { name = "lazydev", group_index = 0 })
+end
 
 local kind_text_map = {
 	Text = " ",
@@ -117,16 +131,7 @@ cmp.setup({
 	}),
 
 	-- ここではすべてのバッファで使用するソースを指定する
-	sources = {
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
-		{ name = "buffer" },
-		{ name = "path" },
-		-- { name = "rg" },
-		-- { name = "nvim_lua" },
-		{ name = "cmp-dbee" },
-		{ name = "treesitter" },
-	},
+	sources = sources,
 
 	-- completion = {
 	--   -- menuone:  候補が1つでも表示
@@ -144,6 +149,7 @@ cmp.setup({
 			max_width = nil,
 			menu = {
 				buffer = "[BUF]",
+				lazydev = "[REQ]",
 				nvim_lsp = "[LSP]",
 				luasnip = "[SNIP]",
 				nvim_lua = "[LUA]",

@@ -46,11 +46,6 @@ function GitHubCopilotProvider.fetch_models(callback)
 	}, nil)
 end
 
-_99.setup({
-	provider = GitHubCopilotProvider,
-	model = "gpt-5.4-mini",
-})
-
 vim.keymap.set("v", ",f", function()
 	_99.visual()
 end)
@@ -67,3 +62,11 @@ end)
 vim.keymap.set("n", ",fm", function()
 	require("99.extensions.telescope").select_model()
 end)
+
+_99.setup({
+	provider = GitHubCopilotProvider,
+	model = "gpt-5.4-mini",
+	md_files = {
+		"AGENT.md",
+	},
+})
