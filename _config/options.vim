@@ -291,7 +291,7 @@ set updatetime=500
 " 
 " set showtabline=0
 
-" set cursorline
+ set cursorline
 
 
 if executable("rg")

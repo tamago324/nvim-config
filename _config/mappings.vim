@@ -48,6 +48,10 @@ nnoremap sh <C-w>h
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
 nnoremap sl <C-w>l
+xnoremap sh <C-w>h
+xnoremap sj <C-w>j
+xnoremap sk <C-w>k
+xnoremap sl <C-w>l
 
 nnoremap sH <C-w>H
 nnoremap sJ <C-w>J

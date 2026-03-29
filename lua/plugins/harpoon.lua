@@ -13,7 +13,7 @@ harpoon:setup()
 -- 	harpoon.ui:toggle_quick_menu(harpoon:list())
 -- end)
 
-vim.keymap.set("n", "<Space>j", function()
+vim.keymap.set("n", "<Space>fj", function()
 	harpoon.ui:toggle_quick_menu(harpoon:list())
 end)
 

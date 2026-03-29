@@ -37,16 +37,37 @@ function! GetSynInfo() abort
 endfunction
 
 
-" ====================
-" TouchPluginLua:
-" ====================
-command! -nargs=1 TouchPluginLua call TouchPlugin(<f-args>, 'lua')
-command! -nargs=1 TouchPluginVim call TouchPlugin(<f-args>, 'vim')
-
-function! TouchPlugin(name, type) abort
-  let l:dir = a:type ==# 'vim' ? g:vim_plugin_config_dir : g:lua_plugin_config_dir
-  call vimrc#drop_or_tabedit(printf('%s/%s.%s', l:dir, a:name, a:type))
-endfunction
+"" ====================
+"" TouchPluginLua:
+"" ====================
+"command! -nargs=1 TouchPluginLua call TouchPlugin(<f-args>, 'lua')
+"command! -nargs=1 TouchPluginVim call TouchPlugin(<f-args>, 'vim')
+"
+"function! TouchPlugin(name, type) abort
+"  let l:dir = a:type ==# 'vim' ? g:vim_plugin_config_dir : g:lua_plugin_config_dir
+"  let l:file = printf('%s/%s.%s', l:dir, a:name, a:type)
+"
+"  call vimrc#drop_or_tabedit(l:file)
+"
+"  if filereadable(l:file)
+"    return
+"  endif
+"
+"  if a:type ==# 'lua'
+"    call setline(1, [
+"          \ 'if vim.api.nvim_call_function("FindPlugin", { "dir-name" }) == 0 then',
+"          \ '  do',
+"          \ '    return',
+"          \ '  end',
+"          \ 'end',
+"          \ ])
+"  else
+"    call setline(1, [
+"          \ 'scriptencoding utf-8',
+"          \ 'UsePlugin "dir-name"',
+"          \ ])
+"  endif
+"endfunction
 
 " ====================
 " PackGet:

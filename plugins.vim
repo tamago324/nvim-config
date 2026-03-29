@@ -128,6 +128,7 @@ Plug 'hrsh7th/cmp-cmdline'
 "Plug 'tamago324/cmp-necosyntax'
 "Plug 'Shougo/neco-syntax'
 "Plug 'hrsh7th/cmp-nvim-lua'
+Plug 'ray-x/cmp-treesitter'
 
  Plug 'L3MON4D3/LuaSnip'
  Plug 'saadparwaiz1/cmp_luasnip'
@@ -204,5 +205,24 @@ Plug 'uga-rosa/translate.nvim'
 
 " リファクタリング
 Plug 'ThePrimeagen/refactoring.nvim'
+
+" スクロールをスムーズにする
+Plug 'karb94/neoscroll.nvim'
+
+Plug 'folke/which-key.nvim'
+
+" copilot のチャット
+Plug 'CopilotC-Nvim/CopilotChat.nvim'
+Plug 'MeanderingProgrammer/render-markdown.nvim'
+
+" Java
+Plug 'jkeresman01/spring-initializr.nvim'
+"Plug 'mfussenegger/nvim-jdtls'
+Plug 'nvim-java/nvim-java'
+Plug 'JavaHello/spring-boot.nvim'
+Plug 'mfussenegger/nvim-dap'
+
+"Plug 'rest-nvim/rest.nvim'
+Plug 'jellydn/hurl.nvim'
 
 call plug#end()

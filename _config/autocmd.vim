@@ -1077,3 +1077,8 @@ autocmd MyAutoCmd FileChangedShellPost * lua vim.notify(
       \ vim.log.levels.INFO,
       \ { title = "External Edit" }
       \ )
+      
+
+" カレントウィンドウだけ、カーソルをつける
+autocmd MyAutoCmd WinEnter,BufEnter * setlocal cursorline
+autocmd MyAutoCmd WinLeave * setlocal nocursorline

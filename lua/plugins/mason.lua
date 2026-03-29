@@ -14,11 +14,13 @@ require("mason-lspconfig").setup({
 	ensure_installed = {
 		"lua_ls",
 		"jsonls",
-		-- "ts_ls",
+		"ts_ls",
 		"pyright",
 		"ruff",
 		"cssmodules_ls",
 		"yamlls",
 		"gopls",
+		-- sudo apt install maven
+		-- "jdtls",
 	},
 })
