@@ -1,6 +1,6 @@
 if
-	vim.api.nvim_call_function("FindPlugin", { "mason.nvim" }) == 0
-	or vim.api.nvim_call_function("FindPlugin", { "mason-lspconfig.nvim" }) == 0
+		vim.api.nvim_call_function("FindPlugin", { "mason.nvim" }) == 0
+		or vim.api.nvim_call_function("FindPlugin", { "mason-lspconfig.nvim" }) == 0
 then
 	do
 		return

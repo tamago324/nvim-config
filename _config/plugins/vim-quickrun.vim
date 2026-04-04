@@ -21,8 +21,12 @@ let g:quickrun_config = {
 \       'hook/output_encode/encoding': '&fileencoding',
 \   },
 \   'python': {
-\       'exec': has('win32') ? 'py -3 %s %a' : 'python3.10 %s %a',
+\       'exec': has('win32') ? 'py -3 %s %a' : 'python %s %a',
 \       'hook/output_encode/encoding': '&fileencoding',
+\   },
+\   'python/pytest': {
+\       'command': 'uv run pytest',
+\       'exec': '%c %s',
 \   },
 \   'scheme': {
 \       'exec': 'gosh %s',

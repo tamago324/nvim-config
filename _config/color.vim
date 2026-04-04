@@ -12,6 +12,11 @@ function! s:define_my_highlight() abort
   hi PounceAcceptBest gui=bold guifg=#555555 guibg=#a6da95
 
   hi YankRoundRegion guifg=#333333 guibg=#8aadf4
+
+  hi link LirEmptyDirText PreInsert
+  hi link LirFloatPreviewBinary PreInsert
+
+  hi link DiagnosticUnderlineHint Comment
 endfunction
 
 augroup MyColorScheme

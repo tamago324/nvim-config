@@ -5,7 +5,6 @@ local lir = require("lir")
 local config = require("lir.config")
 local devicons = require("lir.devicons")
 local highlight = require("lir.highlight")
-local actions = require("lir.actions")
 local uv = vim.loop
 
 local Promise = require("promise")
@@ -18,21 +17,13 @@ local float_preview_bufnr = nil
 local float_preview_win = nil
 local preview_enable = false
 
+local ns_float_preview = a.nvim_create_namespace('LirFloatPreview')
+
 local nvim011 = vim.fn.has("nvim-0.11") == 1
 local has_ts_parser = (nvim011 and vim.treesitter.language.add)
-	or function(lang)
-		return pcall(vim.treesitter.language.add, lang)
-	end
-
-local function setup_autocmd(bufnr)
-	vim.cmd(
-		string.format(
-			"autocmd WinClosed,BufLeave,BufDelete <buffer=%s> ++nested ++once :lua require('xlir.float_preview').close()",
-			bufnr
-		)
-	)
-	vim.cmd(string.format("autocmd CursorMoved <buffer=%s> :lua pcall(require('xlir.float_preview').setlines)", bufnr))
-end
+		or function(lang)
+			return pcall(vim.treesitter.language.add, lang)
+		end
 
 local ts_highlight_on = function(bufnr, path)
 	-- treesitter を使って、ハイライトする
@@ -63,11 +54,31 @@ local is_binary = function(filepath)
 	return false
 end
 
+local function put_preview_hl_text(bufnr, text, hl)
+	a.nvim_buf_set_lines(bufnr, 0, -1, false, { text })
+	vim.hl.range(bufnr, ns_float_preview, hl, { 1, 1 }, { 1, #text })
+end
+
+
+local preview_skip_extensions = { 'pdf' }
+local function skip_preview(filepath)
+	local ext = vim.fn.fnamemodify(filepath, ':e')
+	if vim.tbl_contains(preview_skip_extensions, ext) then
+		return true
+	end
+end
+
 local function read_file_setlines(filepath, bufnr)
 	-- バイナリはプレビューを表示しない
 	local stat = uv.fs_stat(filepath)
 	if not stat or stat.type ~= "file" or is_binary(filepath) then
-		a.nvim_buf_set_lines(bufnr, 0, -1, false, { "This is binary file!" })
+		put_preview_hl_text(bufnr, "	@@@ This is binary file @@@", 'LirFloatPreviewBinary')
+		return
+	end
+
+	-- プレビューをスキップ
+	if skip_preview(filepath) then
+		put_preview_hl_text(bufnr, '	@@@ Skip preview @@@', 'LirFloatPreviewBinary')
 		return
 	end
 
@@ -85,6 +96,9 @@ local function read_file_setlines(filepath, bufnr)
 		if data and #data > 0 then
 			a.nvim_buf_set_lines(bufnr, 0, -1, false, data)
 			ts_highlight_on(bufnr, path)
+		else
+			-- 空なら、クリアする
+			a.nvim_buf_set_lines(bufnr, 0, -1, false, {})
 		end
 	end))
 end
@@ -156,7 +170,6 @@ function M.preview()
 	end
 
 	local lir_win = a.nvim_get_current_win()
-	local lir_bufnr = a.nvim_win_get_buf(0)
 
 	local opts = a.nvim_win_get_config(0)
 	float_preview_bufnr = a.nvim_create_buf(false, true)
@@ -183,16 +196,15 @@ function M.preview()
 		zindex = opts.zindex + 10,
 	}
 
-	float_preview_win = a.nvim_open_win(float_preview_bufnr, true, win_opts)
+	float_preview_win = a.nvim_open_win(float_preview_bufnr, false, win_opts)
 	a.nvim_win_set_option(float_preview_win, "cursorline", false)
 	a.nvim_win_set_option(float_preview_win, "cursorcolumn", false)
 	a.nvim_win_set_option(float_preview_win, "wrap", false)
 	a.nvim_win_set_option(float_preview_win, "signcolumn", "no")
 	a.nvim_win_set_option(float_preview_win, "foldlevel", 50)
 
-	vim.cmd([[setlocal winhl=Normal:LirFloatNormal,EndOfBuffer:LirFloatNormal]])
+	vim.fn.win_execute(float_preview_win, [[setlocal winhl=Normal:LirFloatNormal,EndOfBuffer:LirFloatNormal]], true)
 
-	setup_autocmd(lir_bufnr)
 	a.nvim_set_current_win(lir_win)
 
 	M.setlines(filepath)
@@ -210,6 +222,21 @@ function M.setlines(filepath)
 	-- 本当は、edit でやりたかったけど、なんかうまくいかないから、いったんは独自実装
 	if lir.get_context():current().is_dir then
 		local files = readdir(filepath)
+		if #files == 0 then
+			put_preview_hl_text(float_preview_bufnr, "	Directory is empty", 'LirEmptyDirText')
+			return
+		end
+
+		if not config.values.show_hidden_files then
+			files = vim.tbl_filter(function(val)
+				return string.match(val.value, "^[^.]") ~= nil
+			end, files)
+		end
+
+		files = vim.tbl_filter(function(val)
+			return not vim.tbl_contains(config.values.ignore, val.value)
+		end, files)
+
 		table.sort(files, sort)
 		a.nvim_buf_set_lines(
 			float_preview_bufnr,
@@ -237,31 +264,41 @@ function M.close()
 	pcall(vim.api.nvim_win_close, float_preview_win, true)
 end
 
-function _G._LirFloatPreviewSetupAutocmd()
-	if not float_preview_win then
-		return
-	end
-	setup_autocmd(vim.fn.bufnr())
-end
-
-vim.cmd([[augroup lir-float-preview]])
-vim.cmd([[  autocmd!]])
-vim.cmd([[  autocmd FileType lir :lua _LirFloatPreviewSetupAutocmd()]])
-vim.cmd([[augroup END]])
+vim.api.nvim_create_augroup("lir-float-preview", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+	group = "lir-float-preview",
+	pattern = "lir",
+	callback = function(args)
+		local bufnr = args.buf
+		local group = vim.api.nvim_create_augroup("lir-float-preview-buffer-" .. bufnr, { clear = true })
+		vim.api.nvim_create_autocmd({ "WinClosed", "BufLeave", "BufDelete" }, {
+			group = group,
+			buffer = bufnr,
+			nested = true,
+			once = true,
+			callback = function()
+				require("xlir.float_preview").close()
+			end,
+		})
+		vim.api.nvim_create_autocmd("CursorMoved", {
+			group = group,
+			buffer = bufnr,
+			callback = function()
+				pcall(require("xlir.float_preview").setlines)
+			end,
+		})
+	end,
+})
 
 -- public functions
 function M.toggle()
 	preview_enable = not preview_enable
 	M.preview()
-	-- 描画のずれを直す (なぜか、描画がずれる。。。)
-	actions.reload()
 end
 
 function M.on()
 	preview_enable = true
 	M.preview()
-	-- 描画のずれを直す (なぜか、描画がずれる。。。)
-	actions.reload()
 end
 
 function M.off()

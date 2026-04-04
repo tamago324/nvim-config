@@ -53,6 +53,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
 Plug 'sindrets/diffview.nvim'
 Plug 'lewis6991/gitsigns.nvim'
+Plug 'junegunn/gv.vim'
 
 " ブラウザ系
 Plug 'tyru/open-browser-github.vim'
@@ -219,11 +220,11 @@ Plug 'CopilotC-Nvim/CopilotChat.nvim'
 Plug 'MeanderingProgrammer/render-markdown.nvim'
 
 " Java
-Plug 'jkeresman01/spring-initializr.nvim'
+"Plug 'jkeresman01/spring-initializr.nvim'
 "Plug 'mfussenegger/nvim-jdtls'
-Plug 'nvim-java/nvim-java'
-Plug 'JavaHello/spring-boot.nvim'
-Plug 'mfussenegger/nvim-dap'
+"Plug 'nvim-java/nvim-java'
+"Plug 'JavaHello/spring-boot.nvim'
+"Plug 'mfussenegger/nvim-dap'
 
 "Plug 'rest-nvim/rest.nvim'
 Plug 'jellydn/hurl.nvim'

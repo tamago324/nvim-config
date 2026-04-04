@@ -4,10 +4,6 @@ if vim.api.nvim_call_function("FindPlugin", { "lir.nvim" }) == 0 then
 	end
 end
 
--- do
---   return
--- end
-
 local a = vim.api
 
 local lir = require("lir")
@@ -55,15 +51,6 @@ local explorer = function()
 	end
 end
 
--- local wipeout = function()
---   local ctx = lir.get_context()
---   local bufnr = vim.fn.bufnr(ctx:current_value())
---   if bufnr ~= -1 then
---     vim.api.nvim_buf_delete(bufnr, {force = true})
---   end
---   actions.delete()
--- end
-
 -- deol のバッファを考慮して、開く
 local open = function()
 	local ctx = lir.get_context()
@@ -86,16 +73,24 @@ local open = function()
 	history.add(dir, file)
 end
 
+-- float を考慮しつつ、split もいい感じにする
+local keep_open = function(action)
+	return function()
+		local quit = (vim.w.lir_is_float and true) or false
+		action(quit)
+	end
+end
+
 -- 最後に表示していたディレクトリを保持しておくことですぐに開けるようにする
 local quit = function()
 	states.last_dir = lir.get_context().dir
 	actions.quit()
 	-- float を開いたときのウィンドウに移動する
-	if vim.api.nvim_win_is_valid(vim.t.lir_float_origin_winid) then
-		vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
-	else
-		vim.t.lir_float_origin_winid = nil
-	end
+	-- if vim.api.nvim_win_is_valid(vim.t.lir_float_origin_winid) then
+	--	 vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
+	-- else
+	--	 vim.t.lir_float_origin_winid = nil
+	-- end
 end
 
 -- -- 対象のファイルに対応する tsserver が起動しているかどうかをチェックする
@@ -130,9 +125,9 @@ require("lir").setup({
 		end,
 
 		["l"] = open,
-		["<C-s>"] = actions.split,
-		["<C-v>"] = actions.vsplit,
-		["<C-t>"] = actions.tabedit,
+		["<C-s>"] = keep_open(actions.split),
+		["<C-v>"] = keep_open(actions.vsplit),
+		["<C-t>"] = keep_open(actions.tabedit),
 		["gf"] = xactions.goto_git_root,
 		["h"] = actions.up,
 		["q"] = function()
@@ -236,7 +231,7 @@ require("lir").setup({
 		["T"] = actions.touch,
 
 		-- ["<CR>"] = function()
-		--   vim.cmd("Fin -matcher=fuzzy")
+		--	 vim.cmd("Fin -matcher=fuzzy")
 		-- end
 
 		["p"] = xpreview.toggle,
@@ -267,9 +262,9 @@ require("lir").setup({
 			width = (width > 140 and 140) or width
 
 			return {
-				-- border = { "┌", "─", "┐", "│", "┘", "─", "└", "│", },
+				border = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },
 				-- https://en.wikipedia.org/wiki/Box-drawing_character の 3 の縦棒を基準にする
-				border = { "┏", "━", "┓", "┃", "┛", "━", "┗", "┃" },
+				-- border = { "┏", "━", "┓", "┃", "┛", "━", "┗", "┃" },
 				width = width,
 				height = height,
 			}
@@ -353,8 +348,8 @@ end
 vim.api.nvim_exec(
 	[[
 augroup my-lir
-  autocmd!
-  autocmd User LirSetTextFloatCurdirWindow lua _LirSetTextFloatCurdirWindow()
+	autocmd!
+	autocmd User LirSetTextFloatCurdirWindow lua _LirSetTextFloatCurdirWindow()
 augroup END
 ]],
 	false
@@ -392,3 +387,6 @@ end
 require("xlir.persist_history").setup()
 
 vim.api.nvim_set_keymap("n", "<C-e>", "<Cmd>lua _G.x_lir_init()<CR>", { silent = true, noremap = true })
+vim.keymap.set("n", ",e", function()
+	vim.cmd([[edit .]])
+end, { silent = true, remap = false })

@@ -90,10 +90,10 @@ require("telescope").setup({
 		-- 	override_file_sorter = true,
 		-- },
 		fzf = {
-			fuzzy = true, -- false will only do exact matching
+			fuzzy = true,								-- false will only do exact matching
 			override_generic_sorter = true, -- override the generic sorter
 			override_file_sorter = true, -- override the file sorter
-			case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+			case_mode = "smart_case",		-- or "ignore_case" or "respect_case"
 			-- the default case_mode is "smart_case"
 		},
 		smart_open = {
@@ -178,6 +178,7 @@ end
 -- map_ext("n", ",f", "mru")
 -- map_ext("n", "<Space>fj", "buffers")
 map_ext("n", "<Space><Tab>", "ghq")
+map_ext("n", "<Space>fd", "fd_lir")
 
 vim.keymap.set("n", "<Space>fv", find_vimfiles, { noremap = true, silent = true })
 vim.keymap.set("n", "<Space>ft", filetypes, { noremap = true, silent = true })

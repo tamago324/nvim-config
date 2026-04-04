@@ -26,9 +26,9 @@ function! s:gstatus() abort
     " normal >
   endif
 endfunction
-" nnoremap <silent> <Space>gs :<C-u>Gstatus<CR>\|:wincmd T<CR>
-" nnoremap <silent> <Space>gs :<C-u>call <SID>gstatus()<CR>
-nnoremap <Space>gs <Cmd>Git<CR>
+ "nnoremap <silent> <Space>gs :<C-u>Gstatus<CR>\|:wincmd T<CR>
+ nnoremap <silent> <Space>gs :<C-u>call <SID>gstatus()<CR>
+"nnoremap <Space>gs <Cmd>Git<CR>
 
 " Gstatus のウィンドウ内で実行できるマッピング
 " > , < diff の表示

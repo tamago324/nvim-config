@@ -17,4 +17,6 @@ local function load_rc_files()
 		dofile(file)
 	end
 end
+
 load_rc_files()
+require('user.git-files-jump')
