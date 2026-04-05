@@ -37,20 +37,17 @@ vim.keymap.set({ "i", "s" }, "<C-n>", function()
 	end
 end, { silent = true })
 
-require("luasnip.loaders.from_vscode").lazy_load()
+-- require("luasnip.loaders.from_vscode").lazy_load()
 
 function _G.LuaSnipAllLoad()
-	local files = vim.api.nvim_eval([[sort(glob(g:lua_plugin_config_dir .. '/luasnip/*.lua', '', v:true))]])
-	for _, file in ipairs(files) do
-		dofile(file)
-	end
+	require("luasnip.loaders.from_lua").load({ paths = { vim.g.vimfiles_path .. "/snippets" } })
 end
 vim.cmd([[command! LuaSnipAllLoad lua LuaSnipAllLoad()]])
 LuaSnipAllLoad()
 
 function _G.LuaSnipOpen()
 	local ft = string.gsub(vim.bo.filetype, "%.", "_")
-	local file = string.format("%s/luasnip/%s.lua", vim.g.lua_plugin_config_dir, ft)
+	local file = string.format("%s/snippets/%s.lua", vim.g.vimfiles_path, ft)
 	vim.cmd("split " .. file)
 end
 

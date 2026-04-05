@@ -135,7 +135,7 @@ Plug 'ray-x/cmp-treesitter'
 
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
-Plug 'rafamadriz/friendly-snippets'
+"Plug 'rafamadriz/friendly-snippets'
 
 " util
 Plug 'MunifTanjim/nui.nvim'

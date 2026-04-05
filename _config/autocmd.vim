@@ -1089,3 +1089,4 @@ augroup QuickRunPytest
   " test_*.py という名前のファイルを開いた時だけ、そのバッファにマッピングを作成
   autocmd BufRead,BufNewFile test_*.py nnoremap <buffer> <Space>rr :QuickRun python/pytest<CR>
 augroup END
+
