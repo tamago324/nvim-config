@@ -52,10 +52,10 @@ let g:quickrun_config = {
 \       'exec': 'zig test %s',
 \       'outputter': 'quickfix',
 \   },
-\   'ts/deno': {
-\       'exec': 'deno run --allow-read --allow-write --allow-net %s',
-\       'runner': 'nvimterm',
-\   },
+"\   'ts/deno': {
+"\       'exec': 'deno run --allow-read --allow-write --allow-net %s',
+"\       'runner': 'nvimterm',
+"\   },
 \   'ruby.rspec': {
 \       'command': 'bundle',
 \       'cmdopt': 'exec rspec -f d',
@@ -67,6 +67,10 @@ let g:quickrun_config = {
 \       'outputter': 'quickfix',
 \   },
 \   'typescriptreact': {
+\       'command': 'pnpm',
+\       'cmdopt': 'jest %s',
+\   },
+\   'typescript': {
 \       'command': 'pnpm',
 \       'cmdopt': 'jest %s',
 \   },

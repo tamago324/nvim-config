@@ -1,5 +1,5 @@
 local Job = require("plenary.job")
-local gitsigns = require('gitsigns')
+local gitsigns = require("gitsigns")
 
 ---@class GitFilesJumpFileItem
 ---@field relative_path string
@@ -182,13 +182,12 @@ end
 
 local function open_and_jump_first_hunk(path, files, target_index)
 	open_file(path)
-	gitsigns.nav_hunk('first', { navigation_message = false })
-	vim.cmd('NeoscrollDisableBufferPM')
-	vim.cmd('normal zz')
-	vim.cmd('NeoscrollEnableBufferPM')
+	gitsigns.nav_hunk("first", { navigation_message = false })
+	vim.cmd("NeoscrollDisableBufferPM")
+	vim.cmd("normal zz")
+	vim.cmd("NeoscrollEnableBufferPM")
 	notify_jump(target_index, files)
 end
-
 
 local function jump(direction)
 	local current_file = get_current_file()
@@ -294,8 +293,8 @@ local commands = {
 	stage_and_next = stage_and_next,
 }
 
-vim.keymap.set("n", "gj", commands.jump_next, { desc = "GitFileJump: next file" })
-vim.keymap.set("n", "gk", commands.jump_prev, { desc = "GitFileJump: prev file" })
+vim.keymap.set("n", "gm", commands.jump_next, { desc = "GitFileJump: next file" })
+vim.keymap.set("n", "gp", commands.jump_prev, { desc = "GitFileJump: prev file" })
 vim.keymap.set("n", "gr", commands.refresh, { desc = "GitFileJump: refresh" })
-vim.keymap.set("n", "gss", commands.stage, { desc = "GitFileJump: stage file" })
-vim.keymap.set("n", "gsn", commands.stage_and_next, { desc = "GitFileJump: stage file and jump next" })
+-- vim.keymap.set("n", "gss", commands.stage, { desc = "GitFileJump: stage file" })
+vim.keymap.set("n", "gss", commands.stage_and_next, { desc = "GitFileJump: stage file and jump next" })

@@ -38,4 +38,5 @@ require("nvim-treesitter").install({
 	"sql",
 	"java",
 	"hurl",
+	"http",
 })

@@ -17,13 +17,13 @@ local float_preview_bufnr = nil
 local float_preview_win = nil
 local preview_enable = false
 
-local ns_float_preview = a.nvim_create_namespace('LirFloatPreview')
+local ns_float_preview = a.nvim_create_namespace("LirFloatPreview")
 
 local nvim011 = vim.fn.has("nvim-0.11") == 1
 local has_ts_parser = (nvim011 and vim.treesitter.language.add)
-		or function(lang)
-			return pcall(vim.treesitter.language.add, lang)
-		end
+	or function(lang)
+		return pcall(vim.treesitter.language.add, lang)
+	end
 
 local ts_highlight_on = function(bufnr, path)
 	-- treesitter を使って、ハイライトする
@@ -59,10 +59,9 @@ local function put_preview_hl_text(bufnr, text, hl)
 	vim.hl.range(bufnr, ns_float_preview, hl, { 1, 1 }, { 1, #text })
 end
 
-
-local preview_skip_extensions = { 'pdf' }
+local preview_skip_extensions = { "pdf" }
 local function skip_preview(filepath)
-	local ext = vim.fn.fnamemodify(filepath, ':e')
+	local ext = vim.fn.fnamemodify(filepath, ":e")
 	if vim.tbl_contains(preview_skip_extensions, ext) then
 		return true
 	end
@@ -72,13 +71,13 @@ local function read_file_setlines(filepath, bufnr)
 	-- バイナリはプレビューを表示しない
 	local stat = uv.fs_stat(filepath)
 	if not stat or stat.type ~= "file" or is_binary(filepath) then
-		put_preview_hl_text(bufnr, "	@@@ This is binary file @@@", 'LirFloatPreviewBinary')
+		put_preview_hl_text(bufnr, "	@@@ This is binary file @@@", "LirFloatPreviewBinary")
 		return
 	end
 
 	-- プレビューをスキップ
 	if skip_preview(filepath) then
-		put_preview_hl_text(bufnr, '	@@@ Skip preview @@@', 'LirFloatPreviewBinary')
+		put_preview_hl_text(bufnr, "	@@@ Skip preview @@@", "LirFloatPreviewBinary")
 		return
 	end
 
@@ -223,7 +222,7 @@ function M.setlines(filepath)
 	if lir.get_context():current().is_dir then
 		local files = readdir(filepath)
 		if #files == 0 then
-			put_preview_hl_text(float_preview_bufnr, "	Directory is empty", 'LirEmptyDirText')
+			put_preview_hl_text(float_preview_bufnr, "	Directory is empty", "LirEmptyDirText")
 			return
 		end
 

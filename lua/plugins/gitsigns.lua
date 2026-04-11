@@ -13,14 +13,14 @@ gitsigns.setup({
 	current_line_blame_opts = {
 		virt_text = true,
 		virt_text_pos = "eol", -- 'eol' で行末に表示
-		delay = 500,					 -- カーソルを止めてから表示されるまでのミリ秒
+		delay = 500, -- カーソルを止めてから表示されるまでのミリ秒
 	},
 })
 
-vim.keymap.set("n", "gn", function()
+vim.keymap.set("n", "gj", function()
 	gitsigns.nav_hunk("next", { target = "unstaged", wrap = false })
 end, { desc = "Gitsigns: next hunk" })
-vim.keymap.set("n", "gp", function()
+vim.keymap.set("n", "gk", function()
 	gitsigns.nav_hunk("prev", { target = "unstaged", wrap = false })
 end, { desc = "Gitsigns: prev hunk" })
 
@@ -32,3 +32,19 @@ end, { desc = "Gitsigns: prev hunk" })
 
 vim.keymap.set({ "n" }, "gsh", "<Cmd>Gitsigns stage_hunk<CR>", { desc = "Gitsigns: stage hunk" })
 vim.keymap.set({ "n" }, "gsp", "<Cmd>Gitsigns preview_hunk_inline<CR>", { desc = "Gitsigns: preview hunk" })
+
+-- origin/HEAD との全量比較
+vim.keymap.set("n", "gdt", function()
+	gitsigns.diffthis("origin/HEAD")
+end, { desc = "diffthis origin/HEAD" })
+
+vim.keymap.set("n", "gdo", "diffoff", { desc = "diffoff" })
+
+-- 比較対象を origin/HEAD に切り替える
+vim.keymap.set("n", "gdh", function()
+	gitsigns.change_base("origin/HEAD", true)
+end, { desc = "preview origin/HEAD" })
+-- 比較対象をデフォルト(index)に戻す
+vim.keymap.set("n", "gdr", function()
+	gitsigns.change_base(nil, true)
+end, { desc = "preview reset" })

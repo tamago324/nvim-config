@@ -227,6 +227,17 @@ Plug 'MeanderingProgrammer/render-markdown.nvim'
 "Plug 'mfussenegger/nvim-dap'
 
 "Plug 'rest-nvim/rest.nvim'
-Plug 'jellydn/hurl.nvim'
+"Plug 'jellydn/hurl.nvim'
+Plug 'stevearc/aerial.nvim'
+Plug 'heilgar/nvim-http-client'
+
+Plug 'mgierada/lazydocker.nvim'
+Plug 'akinsho/toggleterm.nvim'
+
+Plug 'nabekou29/js-i18n.nvim' " next-intl のメッセージの表示 (すてき！)
+Plug 'neogitorg/neogit'
+
+
+Plug 'm00qek/baleia.nvim'
 
 call plug#end()

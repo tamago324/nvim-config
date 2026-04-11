@@ -356,7 +356,10 @@ function! s:my_ft_qf() abort
   nnoremap <buffer> <C-j> <Cmd>call search('^[^\\|]')<CR>
   nnoremap <buffer> <C-k> <Cmd>call search('^[^\\|]', 'b')<CR>
 
-  nnoremap <buffer> <Space>ff :Cfilter
+  nnoremap <buffer> <Space>ff :Cfilter 
+  nnoremap <buffer> <Space>fF :Cfilter! 
+  nnoremap <buffer> <Space>ft :Cfilter! test<CR>
+  nnoremap <buffer> <Space>fi :Cfilter impl<CR>
 
   " quickfix とじる
   " nnoremap <buffer> <A-d> <Cmd>lclose<CR>
@@ -488,7 +491,7 @@ function! s:my_ft_python() abort
 
   "nnoremap <buffer><silent> ,f :<C-u>call deol#send(getline('.'))<CR>
   "vnoremap <buffer><silent> ,f :<C-u>call <SID>python_send_lines()<CR>
-  vnoremap <buffer><silent> <Space>rf :<C-u>silent !black %<CR>
+  "vnoremap <buffer><silent> <Space>rf :<C-u>silent !black %<CR>
 endfunction
 
 
