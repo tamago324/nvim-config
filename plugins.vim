@@ -117,6 +117,7 @@ Plug 'danielfalk/smart-open.nvim'
 Plug 'kkharji/sqlite.lua'
 "Plug 'natecraddock/telescope-zf-native.nvim'
 Plug 'benfowler/telescope-luasnip.nvim'
+Plug 'tamago324/telescope-sonictemplate.nvim'
 
 " formatter
 Plug 'stevearc/conform.nvim'
@@ -239,5 +240,10 @@ Plug 'neogitorg/neogit'
 
 
 Plug 'm00qek/baleia.nvim'
+
+Plug 'mattn/sonictemplate-vim'
+
+"Plug 'nosduco/remote-sshfs.nvim'
+Plug 'uhs-robert/sshfs.nvim'
 
 call plug#end()

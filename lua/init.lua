@@ -19,4 +19,5 @@ local function load_rc_files()
 end
 
 load_rc_files()
-require('user.git-files-jump')
+require("user.git-files-jump")
+require("user.ssh_sudo_edit")

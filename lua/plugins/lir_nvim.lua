@@ -338,8 +338,11 @@ function _G._LirSetTextFloatCurdirWindow()
 		end
 
 		local bufnr = vim.w.lir_curdir_win.bufnr
-		vim.api.nvim_buf_set_extmark(bufnr, ns, 0, 1, {
-			end_col = 2,
+		local line = (vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1] or "")
+		local col = math.min(1, #line)
+		local end_col = math.max(col, math.min(2, #line))
+		vim.api.nvim_buf_set_extmark(bufnr, ns, 0, col, {
+			end_col = end_col,
 			virt_text = virt_text,
 		})
 	end
@@ -390,3 +393,11 @@ vim.api.nvim_set_keymap("n", "<C-e>", "<Cmd>lua _G.x_lir_init()<CR>", { silent =
 vim.keymap.set("n", ",e", function()
 	vim.cmd([[edit .]])
 end, { silent = true, remap = false })
+
+vim.keymap.set("n", "H", function()
+	local conn = require("sshfs").get_active()
+	if conn then
+		require("lir.float").toggle(conn.mount_path)
+		xpreview.on()
+	end
+end)
