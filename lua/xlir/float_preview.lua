@@ -149,6 +149,53 @@ local function sort(lhs, rhs)
 	return lhs.value < rhs.value
 end
 
+local function setlines(filepath)
+	if not a.nvim_win_is_valid(float_preview_win) then
+		M.preview()
+		return
+	end
+	if not lir.get_context():current().is_dir then
+		read_file_setlines(filepath, float_preview_bufnr)
+		return
+	end
+
+	-- ディレクトリなら、そのディレクトリ内の内容を表示
+	-- 本当は、edit でやりたかったけど、なんかうまくいかないから、いったんは独自実装
+	local files = readdir(filepath)
+	if #files == 0 then
+		put_preview_hl_text(float_preview_bufnr, "	Directory is empty", "LirEmptyDirText")
+		return
+	end
+
+	if not config.values.show_hidden_files then
+		files = vim.tbl_filter(function(val)
+			return string.match(val.value, "^[^.]") ~= nil
+		end, files)
+	end
+
+	files = vim.tbl_filter(function(val)
+		return not vim.tbl_contains(config.values.ignore, val.value)
+	end, files)
+
+	table.sort(files, sort)
+	a.nvim_buf_set_lines(
+		float_preview_bufnr,
+		0,
+		-1,
+		false,
+		vim.tbl_map(function(item)
+			return item.display
+		end, files)
+	)
+	a.nvim_win_call(float_preview_win, function()
+		highlight.update_highlight(files)
+		-- treesiter はOFF
+		vim.treesitter.stop()
+	end)
+
+	vim.api.nvim_buf_set_option(float_preview_bufnr, "syntax", "off")
+end
+
 function M.preview()
 	if not preview_enable then
 		return M.close()
@@ -206,60 +253,10 @@ function M.preview()
 
 	a.nvim_set_current_win(lir_win)
 
-	M.setlines(filepath)
+	setlines(filepath)
 end
 
-function M.setlines(filepath)
-	if not a.nvim_win_is_valid(float_preview_win) then
-		M.preview()
-		return
-	end
-	-- autocmd で取得する
-	filepath = vim.F.if_nil(filepath, lir.get_context():current().fullpath)
-
-	-- ディレクトリなら、そのディレクトリ内の内容を表示
-	-- 本当は、edit でやりたかったけど、なんかうまくいかないから、いったんは独自実装
-	if lir.get_context():current().is_dir then
-		local files = readdir(filepath)
-		if #files == 0 then
-			put_preview_hl_text(float_preview_bufnr, "	Directory is empty", "LirEmptyDirText")
-			return
-		end
-
-		if not config.values.show_hidden_files then
-			files = vim.tbl_filter(function(val)
-				return string.match(val.value, "^[^.]") ~= nil
-			end, files)
-		end
-
-		files = vim.tbl_filter(function(val)
-			return not vim.tbl_contains(config.values.ignore, val.value)
-		end, files)
-
-		table.sort(files, sort)
-		a.nvim_buf_set_lines(
-			float_preview_bufnr,
-			0,
-			-1,
-			false,
-			vim.tbl_map(function(item)
-				return item.display
-			end, files)
-		)
-		a.nvim_win_call(float_preview_win, function()
-			highlight.update_highlight(files)
-			-- treesiter はOFF
-			vim.treesitter.stop()
-		end)
-
-		vim.api.nvim_buf_set_option(float_preview_bufnr, "syntax", "off")
-		return
-	end
-
-	read_file_setlines(filepath, float_preview_bufnr)
-end
-
-function M.close()
+local function close()
 	pcall(vim.api.nvim_win_close, float_preview_win, true)
 end
 
@@ -276,14 +273,14 @@ vim.api.nvim_create_autocmd("FileType", {
 			nested = true,
 			once = true,
 			callback = function()
-				require("xlir.float_preview").close()
+				close()
 			end,
 		})
 		vim.api.nvim_create_autocmd("CursorMoved", {
 			group = group,
 			buffer = bufnr,
 			callback = function()
-				pcall(require("xlir.float_preview").setlines)
+				setlines(lir.get_context():current().fullpath)
 			end,
 		})
 	end,
