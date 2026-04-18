@@ -5,6 +5,7 @@ local lir = require("lir")
 local config = require("lir.config")
 local devicons = require("lir.devicons")
 local highlight = require("lir.highlight")
+local utils = require("lir.utils")
 local uv = vim.loop
 
 local Promise = require("promise")
@@ -65,6 +66,10 @@ local function skip_preview(filepath)
 	if vim.tbl_contains(preview_skip_extensions, ext) then
 		return true
 	end
+end
+
+function is_float()
+	return utils.win_get_var("lir_is_float")
 end
 
 local function read_file_setlines(filepath, bufnr)
@@ -150,6 +155,10 @@ local function sort(lhs, rhs)
 end
 
 local function setlines(filepath)
+	if not is_float() then
+		return
+	end
+
 	if not a.nvim_win_is_valid(float_preview_win) then
 		M.preview()
 		return
@@ -197,6 +206,10 @@ local function setlines(filepath)
 end
 
 function M.preview()
+	if not is_float() then
+		return
+	end
+
 	if not preview_enable then
 		return M.close()
 	end
