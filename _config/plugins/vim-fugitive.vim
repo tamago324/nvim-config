@@ -13,7 +13,7 @@ function! s:gstatus() abort
   else
     try
       Git
-      wincmd T
+      "wincmd T
     catch /.*/
       echomsg v:errmsg
     endtry

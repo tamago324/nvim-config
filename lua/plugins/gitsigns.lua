@@ -31,7 +31,9 @@ end, { desc = "Gitsigns: prev hunk" })
 -- end)
 
 vim.keymap.set({ "n" }, "gsh", "<Cmd>Gitsigns stage_hunk<CR>", { desc = "Gitsigns: stage hunk" })
+vim.keymap.set({ "n" }, "gsr", "<Cmd>Gitsigns reset_hunk<CR>", { desc = "Gitsigns: reset hunk" })
 vim.keymap.set({ "n" }, "gsp", "<Cmd>Gitsigns preview_hunk_inline<CR>", { desc = "Gitsigns: preview hunk" })
+vim.keymap.set({ "n" }, "gsb", "<Cmd>Gitsigns blame<CR>", { desc = "Gitsigns: blame" })
 
 -- origin/HEAD との全量比較
 vim.keymap.set("n", "gdt", function()
@@ -44,7 +46,15 @@ vim.keymap.set("n", "gdo", "diffoff", { desc = "diffoff" })
 vim.keymap.set("n", "gdh", function()
 	gitsigns.change_base("origin/HEAD", true)
 end, { desc = "preview origin/HEAD" })
+
+vim.keymap.set("n", "gdj", function()
+	vim.ui.input({
+		prompt = "BranchName: ",
+		default = "origin/HEAD",
+	}, function(branch)
+		gitsigns.change_base(branch, true)
+	end)
+end, { desc = "preview origin/HEAD" })
+
 -- 比較対象をデフォルト(index)に戻す
-vim.keymap.set("n", "gdr", function()
-	gitsigns.change_base(nil, true)
-end, { desc = "preview reset" })
+vim.keymap.set({ "n" }, "gdr", "<Cmd>Gitsigns reset_base<CR>", { desc = "Gitsigns: reset base" })

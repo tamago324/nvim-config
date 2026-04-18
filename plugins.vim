@@ -245,5 +245,7 @@ Plug 'mattn/sonictemplate-vim'
 
 "Plug 'nosduco/remote-sshfs.nvim'
 Plug 'uhs-robert/sshfs.nvim'
+Plug 'ibhagwan/fzf-lua'
+Plug 'folke/snacks.nvim'
 
 call plug#end()

@@ -21,3 +21,10 @@ end
 load_rc_files()
 require("user.git-files-jump")
 require("user.ssh_sudo_edit")
+
+vim.filetype.add({
+	filename = {
+		["docker-compose.yml"] = "yaml.docker-compose",
+		["compose.yml"] = "yaml.docker-compose",
+	},
+})
