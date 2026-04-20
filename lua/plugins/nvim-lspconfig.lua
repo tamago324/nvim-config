@@ -78,22 +78,22 @@ nlspsettings.setup({
 	open_strictly = true,
 })
 
-require("typescript-tools").setup({
-	root_dir = function(bufnr, on_dir)
-		if deno.is_deno_project(bufnr) then
-			return
-		end
-
-		local root_dir = vim.fs.root(bufnr, {
-			"tsconfig.json",
-			"jsconfig.json",
-			"package.json",
-			".git",
-		}) or vim.fn.getcwd()
-
-		on_dir(root_dir)
-	end,
-})
+-- require("typescript-tools").setup({
+-- 	root_dir = function(bufnr, on_dir)
+-- 		if deno.is_deno_project(bufnr) then
+-- 			return
+-- 		end
+--
+-- 		local root_dir = vim.fs.root(bufnr, {
+-- 			"tsconfig.json",
+-- 			"jsconfig.json",
+-- 			"package.json",
+-- 			".git",
+-- 		}) or vim.fn.getcwd()
+--
+-- 		on_dir(root_dir)
+-- 	end,
+-- })
 
 vim.diagnostic.config({
 	underline = {
