@@ -159,6 +159,13 @@ local function setlines(filepath)
 		return
 	end
 
+	-- autocmd 用
+	local current = lir.get_context():current()
+	if not current then
+		return
+	end
+	filepath = vim.F.if_nil(filepath, current.fullpath)
+
 	if not a.nvim_win_is_valid(float_preview_win) then
 		M.preview()
 		return
@@ -205,31 +212,7 @@ local function setlines(filepath)
 	vim.api.nvim_buf_set_option(float_preview_bufnr, "syntax", "off")
 end
 
-function M.preview()
-	if not is_float() then
-		return
-	end
-
-	if not preview_enable then
-		return M.close()
-	end
-
-	if vim.bo.ft ~= "lir" then
-		return
-	end
-
-	local lir_ctx = lir.get_context()
-	if #lir_ctx.files == 0 then
-		return
-	end
-
-	local filepath
-	if lir_ctx:current() then
-		filepath = lir_ctx:current().fullpath
-	end
-
-	local lir_win = a.nvim_get_current_win()
-
+local function win_setup()
 	local opts = a.nvim_win_get_config(0)
 	float_preview_bufnr = a.nvim_create_buf(false, true)
 
@@ -263,7 +246,33 @@ function M.preview()
 	a.nvim_win_set_option(float_preview_win, "foldlevel", 50)
 
 	vim.fn.win_execute(float_preview_win, [[setlocal winhl=Normal:LirFloatNormal,EndOfBuffer:LirFloatNormal]], true)
+end
 
+function M.preview()
+	if not is_float() then
+		return
+	end
+
+	if not preview_enable then
+		return M.close()
+	end
+
+	if vim.bo.ft ~= "lir" then
+		return
+	end
+
+	local lir_ctx = lir.get_context()
+	if #lir_ctx.files == 0 then
+		return
+	end
+
+	local filepath
+	if lir_ctx:current() then
+		filepath = lir_ctx:current().fullpath
+	end
+
+	local lir_win = a.nvim_get_current_win()
+	win_setup()
 	a.nvim_set_current_win(lir_win)
 
 	setlines(filepath)
@@ -293,7 +302,7 @@ vim.api.nvim_create_autocmd("FileType", {
 			group = group,
 			buffer = bufnr,
 			callback = function()
-				setlines(lir.get_context():current().fullpath)
+				setlines()
 			end,
 		})
 	end,

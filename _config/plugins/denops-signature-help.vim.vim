@@ -4,7 +4,8 @@ UsePlugin 'denops-signature_help'
 call signature_help#enable()
 
 let g:signature_help_config = {
-\  "style": "virtual",
+\ "contentsStyle": "labels",
+\ "style": "virtual",
 \}
 
 let s:denops_signature_help_ignore_filetype = ['vim']

@@ -9,6 +9,7 @@ copilot.setup({
 	highlight_headers = false,
 	separator = "---",
 	error_header = "> [!ERROR] Error",
+	model = "gpt-5.4-mini", -- AI model to use
 })
 
 vim.keymap.set({ "n", "x" }, "<A-i>", function()

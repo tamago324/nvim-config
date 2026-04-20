@@ -13,7 +13,7 @@ local sources = {
 	-- { name = "rg" },
 	{ name = "nvim_lua" },
 	{ name = "cmp-dbee" },
-	{ name = "treesitter" },
+	-- { name = "treesitter" },
 }
 
 if has_plugin("lazydev.nvim") then

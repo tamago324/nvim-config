@@ -5,6 +5,7 @@ if vim.api.nvim_call_function("FindPlugin", { "nvim-lspconfig" }) == 0 then
 end
 
 local nlspsettings = require("nlspsettings")
+local deno = require("xlsp.deno")
 
 vim.lsp.config("*", {
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
@@ -30,8 +31,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			})
 		end)
 
+		vim.keymap.set("n", "K", function()
+			vim.lsp.buf.hover({
+				border = "single",
+			})
+		end)
+
 		-- K (hover) は hover.nvim を使う
-		vim.keymap.set("n", "<A-o>", vim.diagnostic.setloclist, map_opts)
+		-- vim.keymap.set("n", "<A-o>", vim.diagnostic.setloclist, map_opts)
 		vim.keymap.set("n", "<A-p>", function()
 			vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
 		end, map_opts)
@@ -72,7 +79,22 @@ nlspsettings.setup({
 	open_strictly = true,
 })
 
-require("typescript-tools").setup({})
+require("typescript-tools").setup({
+	root_dir = function(bufnr, on_dir)
+		if deno.is_deno_project(bufnr) then
+			return
+		end
+
+		local root_dir = vim.fs.root(bufnr, {
+			"tsconfig.json",
+			"jsconfig.json",
+			"package.json",
+			".git",
+		}) or vim.fn.getcwd()
+
+		on_dir(root_dir)
+	end,
+})
 
 vim.diagnostic.config({
 	underline = {

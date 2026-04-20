@@ -3,3 +3,5 @@ if vim.api.nvim_call_function("FindPlugin", { "debugprint.nvim" }) == 0 then
 		return
 	end
 end
+
+require("debugprint").setup()

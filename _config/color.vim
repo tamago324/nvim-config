@@ -29,7 +29,7 @@ set termguicolors
 
 set bg=dark
 
-colorscheme catppuccin-macchiato
+colorscheme catppuccin-nvim
 
 " old
 "function! s:define_my_highlight() abort

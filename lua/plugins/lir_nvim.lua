@@ -27,10 +27,7 @@ require("lir.git_status").setup({
 })
 
 ---@class my_lir_states
----@field last_dir string
-local states = {
-	mod_mode = false,
-}
+local states = {}
 
 local function feedkeys(key)
 	a.nvim_feedkeys(a.nvim_replace_termcodes(key, true, false, true), "n", true)
@@ -51,7 +48,6 @@ local explorer = function()
 	end
 end
 
--- deol のバッファを考慮して、開く
 local open = function()
 	local ctx = lir.get_context()
 	local dir, file = ctx.dir, ctx:current_value()
@@ -64,8 +60,6 @@ local open = function()
 	if vim.w.lir_is_float and not ctx:is_dir_current() then
 		-- 閉じてから開く
 		actions.quit()
-		-- float を開いたときのウィンドウに移動する
-		vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
 	end
 
 	local cmd = "edit"
@@ -85,18 +79,35 @@ end
 local quit = function()
 	states.last_dir = lir.get_context().dir
 	actions.quit()
-	-- float を開いたときのウィンドウに移動する
-	-- if vim.api.nvim_win_is_valid(vim.t.lir_float_origin_winid) then
-	--	 vim.api.nvim_set_current_win(vim.t.lir_float_origin_winid)
-	-- else
-	--	 vim.t.lir_float_origin_winid = nil
-	-- end
 end
 
--- -- 対象のファイルに対応する tsserver が起動しているかどうかをチェックする
--- local is_started_tsserver = function()
--- 	return tsserver_rename.get_client(lir.get_context().dir) ~= nil
--- end
+local is_hide_term = function(buf)
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		if vim.api.nvim_win_get_buf(win) == buf then
+			return false
+		end
+	end
+	return true
+end
+
+-- Snacks terminal で cd する
+local term_cd = function(dir)
+	-- 取得 or 作成
+	local term = Snacks.terminal.get()
+	if not term or is_hide_term(term.buf) then
+		Snacks.terminal.open()
+	end
+
+	assert(term)
+	if not term.buf then
+		return
+	end
+
+	-- term.buf のターミナルに対して、送信できる
+	local channel = vim.bo[term.buf].channel
+	vim.api.nvim_chan_send(channel, string.char(21)) -- <C-u> を送る (Ctrl-Aが1だから、21)
+	vim.fn.chansend(channel, string.format("cd %s\n", dir))
+end
 
 require("lir").setup({
 	hide_cursor = vim.fn.has("win64") == 0,
@@ -131,7 +142,6 @@ require("lir").setup({
 		["gf"] = xactions.goto_git_root,
 		["h"] = actions.up,
 		["q"] = function()
-			states.mod_mode = false
 			actions.reload()
 		end,
 		["<Esc>"] = quit,
@@ -141,26 +151,15 @@ require("lir").setup({
 		end,
 		K = xactions.newfile,
 		R = xactions.rename_and_jump,
-		-- ["R"] = function()
-		-- 	if is_started_tsserver() then
-		-- 		-- qflist に出力するための準備
-		-- 		local qflist_id = tsserver_rename.getqflist_id()
-		-- 		tsserver_rename.change_workspace_applyedit_handler(qflist_id)
-		--
-		-- 		tsserver_rename.rename()
-		-- 		return
-		-- 	end
-		--
-		-- 	xactions.rename()
-		-- end,
-		-- ["R"] = actions.rename,
-		-- ["tr"] = require("xlir.actions.simple_tsserver_rename").rename,
+
 		["@"] = xactions.cd,
 
-		-- ["<A-d>"] = function()
-		-- 	local dir = lir.get_context().dir
-		-- 	vim.fn.system("wezterm.exe cli split-pane --cwd " .. dir)
-		-- end,
+		["<A-o>"] = function()
+			local ctx = lir.get_context()
+			local dir = ctx.dir
+			quit()
+			term_cd(dir)
+		end,
 
 		["Y"] = actions.yank_path,
 		["."] = actions.toggle_show_hidden,
@@ -169,9 +168,6 @@ require("lir").setup({
 			vim.cmd("edit " .. vim.fn.expand("$HOME"))
 		end,
 
-		-- ["B"] = b.list,
-		-- ["ba"] = b.add,
-
 		["J"] = function()
 			m.toggle_mark()
 			vim.cmd("normal! j")
@@ -179,32 +175,9 @@ require("lir").setup({
 		["C"] = c.copy,
 		["X"] = c.cut,
 		P = c.paste,
-		-- ["P"] = function()
-		-- 	c.paste()
-		--
-		-- 	-- tsserver_rename を実行する
-		-- 	local ctx = lir.get_context()
-		-- 	local tsserver_client = tsserver_rename.get_client(ctx.dir)
-		-- 	if tsserver_client == nil then
-		-- 		return
-		-- 	end
-		--
-		-- 	local qflist_id = tsserver_rename.getqflist_id()
-		-- 	for _, file in ipairs(ctx.pasted_files) do
-		-- 		-- qflist に出力するための準備
-		-- 		tsserver_rename.change_workspace_applyedit_handler(qflist_id)
-		-- 		tsserver_rename.execute_command_rename_file(tsserver_client, file.source_path, file.target_path)
-		-- 	end
-		-- end,
 		["D"] = xactions.delete,
-		-- ["D"] = actions.delete,
 		-- python3 -m pip install --user --upgrade neovim-remote
 		-- ["M"] = mmv,
-		-- ["M"] = function()
-		-- 	states.mod_mode = not states.mod_mode
-		-- 	actions.reload()
-		-- 	pprint(states.mod_mode and "並び順: 更新順" or "並び順: 標準")
-		-- end,
 
 		["dd"] = actions.wipeout,
 
@@ -287,41 +260,7 @@ require("lir").setup({
 			end,
 		})
 	end,
-
-	get_filters = function()
-		if not states.mod_mode then
-			return {}
-		end
-
-		return {
-			function(files)
-				-- https://www.man7.org/linux/man-pages/man2/stat.2.html
-				-- mtime: 最終更新日時
-				-- mtime.sec でソートする
-
-				files = vim.tbl_map(function(f)
-					local mtime = uv.fs_stat(f.fullpath).mtime or nil
-					f.mod_time = mtime.sec
-					return f
-				end, files)
-
-				local function sort(lhs, rhs)
-					if lhs.is_dir and not rhs.is_dir then
-						return true
-					elseif not lhs.is_dir and rhs.is_dir then
-						return false
-					elseif lhs.is_dir and rhs.is_dir then
-						-- どちらともディレクトリなら、アルファベット順
-						return lhs.value < rhs.value
-					end
-					return lhs.mod_time > rhs.mod_time
-				end
-
-				table.sort(files, sort)
-				return files
-			end,
-		}
-	end,
+	get_filters = nil,
 })
 
 function _G._LirSetTextFloatCurdirWindow()
@@ -331,10 +270,6 @@ function _G._LirSetTextFloatCurdirWindow()
 			virt_text = { { "󿜇 ", "WarningMsg" } }
 		else
 			virt_text = { { "󿜈 ", "Comment" } }
-		end
-
-		if states.mod_mode then
-			table.insert(virt_text, { " M", "WarningMsg" })
 		end
 
 		local bufnr = vim.w.lir_curdir_win.bufnr
@@ -358,27 +293,10 @@ augroup END
 	false
 )
 
--- require("lir.bookmark").setup({
--- 	bookmark_path = "~/.lir_bookmark",
--- 	mappings = {
--- 		["l"] = b.edit,
--- 		["<C-s>"] = b.split,
--- 		["<C-v>"] = b.vsplit,
--- 		["<C-t>"] = b.tabedit,
--- 		["<C-e>"] = b.open_lir,
--- 		["B"] = b.open_lir,
--- 		["q"] = b.open_lir,
--- 	},
--- })
-
 _G.x_lir_init = function()
 	local dir = nil
-	local bufname = vim.fn.bufname()
-	states.last_buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-	if bufname:match("deol%-edit@") or bufname:match("term://") then
-		dir = vim.fn.getcwd()
-	end
-
+	-- local bufname = vim.fn.bufname()
+	-- states.last_buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
 	if dir == nil and vim.fn.isdirectory(vim.fn.expand("%:p:h")) == 0 then
 		-- もし、存在しないなら、HOME を表示する
 		dir = vim.fn.expand("~")

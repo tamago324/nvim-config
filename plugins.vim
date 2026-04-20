@@ -104,10 +104,12 @@ Plug 'folke/trouble.nvim'
 Plug 'tamago324/nlsp-settings.nvim'
 Plug 'j-hui/fidget.nvim' " LSPのローディングをカッコよくする
 Plug 'rachartier/tiny-inline-diagnostic.nvim' " ErrorLens
-Plug 'lewis6991/hover.nvim' " hover
+"Plug 'lewis6991/hover.nvim' " hover
 Plug 'smjonas/inc-rename.nvim' " rename
 Plug 'aznhe21/actions-preview.nvim' " code actions + telescope
 Plug 'pmizio/typescript-tools.nvim'
+"Plug 'ray-x/lsp_signature.nvim'
+Plug 'Fildo7525/pretty_hover'
 
 " fizzy finder
 Plug 'nvim-telescope/telescope.nvim'
@@ -247,5 +249,9 @@ Plug 'mattn/sonictemplate-vim'
 Plug 'uhs-robert/sshfs.nvim'
 Plug 'ibhagwan/fzf-lua'
 Plug 'folke/snacks.nvim'
+
+" npm install -g pretty-ts-errors-markdown
+Plug 'youyoumu/pretty-ts-errors.nvim'
+Plug 'dmmulroy/ts-error-translator.nvim'
 
 call plug#end()
