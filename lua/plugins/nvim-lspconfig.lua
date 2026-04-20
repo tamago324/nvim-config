@@ -5,7 +5,6 @@ if vim.api.nvim_call_function("FindPlugin", { "nvim-lspconfig" }) == 0 then
 end
 
 local nlspsettings = require("nlspsettings")
-local deno = require("xlsp.deno")
 
 vim.lsp.config("*", {
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
