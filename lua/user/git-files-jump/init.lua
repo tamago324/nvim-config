@@ -80,6 +80,14 @@ local function get_modified_files(cwd)
 		return {}
 	end
 
+	-- 削除済みのファイルは除外する
+	if not err and results then
+		local uv = vim.uv or vim.loop
+		results = vim.tbl_filter(function(file)
+			return uv.fs_stat(vim.fs.joinpath(cwd, file)) ~= nil
+		end, results)
+	end
+
 	local files = {}
 	for _, relative_path in ipairs(results) do
 		table.insert(files, {

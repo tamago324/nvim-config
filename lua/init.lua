@@ -21,6 +21,7 @@ end
 load_rc_files()
 require("user.git-files-jump")
 require("user.ssh_sudo_edit")
+require("user.mnt_change_cursorline")
 
 vim.filetype.add({
 	filename = {

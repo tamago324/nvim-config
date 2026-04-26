@@ -50,6 +50,7 @@ autocmd MyAutoCmd FileType yaml         setlocal sw=2 sts=2 ts=2 et
 autocmd MyAutoCmd FileType typescriptreact setlocal sw=2 sts=2 ts=2 et
 autocmd MyAutoCmd FileType jsx          setlocal sw=2 sts=2 ts=2 et
 autocmd MyAutoCmd FileType javascriptreact setlocal sw=2 sts=2 ts=2 et
+autocmd MyAutoCmd FileType just setlocal sw=2 sts=2 ts=2 et
 
 
 " 拡張子をもとにファイルタイプを設定

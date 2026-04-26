@@ -79,7 +79,7 @@ Plug 'hrsh7th/vim-eft'
 Plug 'andymass/vim-matchup'
 Plug 'tamago324/vim-search-pulse'
 Plug 'kevinhwang91/nvim-hlslens'
-Plug 'monaqa/modesearch.vim'
+"Plug 'monaqa/modesearch.vim'
 Plug 'rlane/pounce.nvim'
 
 " tree-sitter
@@ -90,7 +90,7 @@ Plug 'windwp/nvim-ts-autotag'
 "Plug 'yioneko/nvim-yati'
 
 " indent
-Plug 'shellRaining/hlchunk.nvim'
+"Plug 'shellRaining/hlchunk.nvim'
 
 " LSP
 Plug 'neovim/nvim-lspconfig'
@@ -100,7 +100,7 @@ Plug 'onsails/lspkind-nvim'
 Plug 'matsui54/denops-signature_help'
 Plug 'RRethy/vim-illuminate'
 Plug 'folke/lsp-colors.nvim'
-Plug 'folke/trouble.nvim'
+"Plug 'folke/trouble.nvim'
 Plug 'tamago324/nlsp-settings.nvim'
 Plug 'j-hui/fidget.nvim' " LSPのローディングをカッコよくする
 Plug 'rachartier/tiny-inline-diagnostic.nvim' " ErrorLens
@@ -109,7 +109,7 @@ Plug 'smjonas/inc-rename.nvim' " rename
 Plug 'aznhe21/actions-preview.nvim' " code actions + telescope
 Plug 'pmizio/typescript-tools.nvim'
 "Plug 'ray-x/lsp_signature.nvim'
-Plug 'Fildo7525/pretty_hover'
+"Plug 'Fildo7525/pretty_hover'
 
 " fizzy finder
 Plug 'nvim-telescope/telescope.nvim'
@@ -134,7 +134,7 @@ Plug 'hrsh7th/cmp-cmdline'
 "Plug 'tamago324/cmp-necosyntax'
 "Plug 'Shougo/neco-syntax'
 Plug 'hrsh7th/cmp-nvim-lua'
-Plug 'ray-x/cmp-treesitter'
+"Plug 'ray-x/cmp-treesitter'
 
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
@@ -164,18 +164,18 @@ Plug 'lambdalisue/edita.vim'
 "Plug 'dhananjaylatkar/cscope_maps.nvim'
 Plug 'lambdalisue/vim-protocol'
 Plug 'mattn/vim-findroot'
-Plug 'nacro90/numb.nvim'
+"Plug 'nacro90/numb.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'lambdalisue/mr.vim'
-Plug 'petertriho/nvim-scrollbar'
-Plug 'dstein64/nvim-scrollview' " スクロールバーのところにdiagnosticsを表示
+"Plug 'petertriho/nvim-scrollbar'
+"Plug 'dstein64/nvim-scrollview' " スクロールバーのところにdiagnosticsを表示
  Plug 'aiya000/aho-bakaup.vim'
 Plug 'lambdalisue/vim-backslash'
 " Plug 'mvllow/modes.nvim'
 " Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'rcarriga/nvim-notify'
+"Plug 'rcarriga/nvim-notify'
 "Plug 'pocco81/auto-save.nvim'
-Plug 'uga-rosa/ccc.nvim'
+"Plug 'uga-rosa/ccc.nvim'
 
 
 " 便利
@@ -187,10 +187,9 @@ Plug 'tyru/capture.vim', { 'on': 'Capture' }
 Plug 'Bakudankun/BackAndForward.vim'
 Plug 'thinca/vim-ref'
 Plug 'hrsh7th/vim-gindent'
-
-Plug 'EthanJWright/vs-tasks.nvim'
 Plug 't9md/vim-quickhl'
 
+Plug 'EthanJWright/vs-tasks.nvim'
 Plug 'stevearc/overseer.nvim'
 
 Plug 'razak17/tailwind-fold.nvim'
@@ -198,8 +197,8 @@ Plug 'WhoIsSethDaniel/mason-tool-installer.nvim'
 
 Plug 'mfussenegger/nvim-lint'
 
-Plug 'kndndrj/nvim-dbee'
-Plug 'MattiasMTS/cmp-dbee'
+"Plug 'kndndrj/nvim-dbee'
+"Plug 'MattiasMTS/cmp-dbee'
 
 "Plug 'nvim-zh/colorful-winsep.nvim' " ウィンドウの区切りをいい感じにする
 Plug 'andrewferrier/debugprint.nvim' " デバッグプリントを挿入
@@ -213,8 +212,8 @@ Plug 'uga-rosa/translate.nvim'
 " リファクタリング
 Plug 'ThePrimeagen/refactoring.nvim'
 
-" スクロールをスムーズにする
-Plug 'karb94/neoscroll.nvim'
+"" スクロールをスムーズにする
+"Plug 'karb94/neoscroll.nvim'
 
 Plug 'folke/which-key.nvim'
 
@@ -251,7 +250,7 @@ Plug 'ibhagwan/fzf-lua'
 Plug 'folke/snacks.nvim'
 
 " npm install -g pretty-ts-errors-markdown
-Plug 'youyoumu/pretty-ts-errors.nvim'
-Plug 'dmmulroy/ts-error-translator.nvim'
+"Plug 'youyoumu/pretty-ts-errors.nvim'
+"Plug 'dmmulroy/ts-error-translator.nvim'
 
 call plug#end()

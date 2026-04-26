@@ -5,6 +5,17 @@ if vim.api.nvim_call_function("FindPlugin", { "nvim-lspconfig" }) == 0 then
 end
 
 local nlspsettings = require("nlspsettings")
+local ts_organize_imports = "typescriptTools/organizeImports"
+
+local function ignore_ts_organize_imports(client)
+	if client == nil or client.name == "typescript-tools" then
+		return
+	end
+
+	client.handlers = client.handlers or {}
+	client.handlers[ts_organize_imports] = client.handlers[ts_organize_imports] or function()
+	end
+end
 
 vim.lsp.config("*", {
 	capabilities = require("cmp_nvim_lsp").default_capabilities(),
@@ -14,6 +25,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
 		local jump_or_list = require("xlsp.jump_or_list")
 		local map_opts = { buffer = ev.buf, noremap = true, silent = true }
+		local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+		-- typescript-tools sends organizeImports to every attached client.
+		-- Give unsupported clients a no-op handler so the request does not abort.
+		ignore_ts_organize_imports(client)
 
 		-- vim.keymap.set("n", "<Up>", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", map_opts)
 		-- vim.keymap.set("n", "<Down>", "<Cmd>Lspsaga diagnostic_jump_prev<CR>", map_opts)

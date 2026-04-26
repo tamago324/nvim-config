@@ -17,7 +17,7 @@ require("snacks").setup({
 		enabled = true,
 		sources = {
 			commands = {
-				layout = { preset = "vscode" },
+				layout = { preset = "vscode", position = "center" },
 				preview = "none",
 			},
 		},
@@ -103,6 +103,10 @@ end, { desc = "help" })
 
 vim.keymap.set("n", "<Space><CR>", function()
 	Snacks.picker.commands()
+end, { desc = "commands" })
+
+vim.keymap.set("n", ",g", function()
+	Snacks.picker.command_history()
 end, { desc = "command history" })
 
 -- terminal
