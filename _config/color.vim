@@ -17,6 +17,7 @@ function! s:define_my_highlight() abort
   hi link LirFloatPreviewBinary PreInsert
 
   hi link DiagnosticUnderlineHint Comment
+  hi SignColumn guifg=#cdd6f4 guibg=#24243a
 endfunction
 
 augroup MyColorScheme

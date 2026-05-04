@@ -13,8 +13,7 @@ local function ignore_ts_organize_imports(client)
 	end
 
 	client.handlers = client.handlers or {}
-	client.handlers[ts_organize_imports] = client.handlers[ts_organize_imports] or function()
-	end
+	client.handlers[ts_organize_imports] = client.handlers[ts_organize_imports] or function() end
 end
 
 vim.lsp.config("*", {
@@ -117,3 +116,8 @@ vim.diagnostic.config({
 		severity = { min = vim.diagnostic.severity.WARN },
 	},
 })
+
+-- -- https://blog.atusy.net/2025/08/29/copilot-via-nvim-lsp-client/
+-- vim.lsp.inline_completion.enable(true)
+--
+-- vim.keymap.set("i", "<M-l>", "<cmd>lua vim.lsp.inline_completion.get()<cr>", { silent = true })

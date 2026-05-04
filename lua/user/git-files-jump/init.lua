@@ -191,9 +191,7 @@ end
 local function open_and_jump_first_hunk(path, files, target_index)
 	open_file(path)
 	gitsigns.nav_hunk("first", { navigation_message = false })
-	vim.cmd("NeoscrollDisableBufferPM")
 	vim.cmd("normal zz")
-	vim.cmd("NeoscrollEnableBufferPM")
 	notify_jump(target_index, files)
 end
 

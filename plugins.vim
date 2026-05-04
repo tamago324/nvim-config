@@ -253,4 +253,7 @@ Plug 'folke/snacks.nvim'
 "Plug 'youyoumu/pretty-ts-errors.nvim'
 "Plug 'dmmulroy/ts-error-translator.nvim'
 
+Plug 'github/copilot.vim'
+Plug 'zbirenbaum/copilot.lua'
+
 call plug#end()

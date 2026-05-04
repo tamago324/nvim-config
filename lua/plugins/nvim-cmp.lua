@@ -277,3 +277,24 @@ cmp.setup.cmdline(":", {
 -- require("cmp_necosyntax").setup({
 -- 	filetypes = { "plantuml", "make", "zsh" },
 -- })
+
+-- -- copilot のサジェストを cmp のメニューが開いているときは非表示にする
+-- cmp.event:on("menu_opened", function()
+-- 	vim.b.copilot_suggestion_hidden = true
+-- end)
+--
+-- cmp.event:on("menu_closed", function()
+-- 	vim.b.copilot_suggestion_hidden = false
+-- end)
+--
+-- -- Copilot をトリガーする
+-- vim.keymap.set("i", "<A-j>", function()
+-- 	if cmp.visible() then
+-- 		cmp.abort()
+-- 	end
+--
+-- 	-- 確実にトリガーさせるため、少し遅らせる
+-- 	vim.schedule(function()
+-- 		require("copilot.suggestion").next() -- 次の候補を表示（未表示ならトリガー）
+-- 	end)
+-- end, { desc = "Close cmp and trigger Copilot" })
