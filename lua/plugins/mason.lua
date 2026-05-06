@@ -23,5 +23,6 @@ require("mason-lspconfig").setup({
 		-- sudo apt install maven
 		-- "jdtls",
 		"docker_compose_language_service",
+		"terraformls",
 	},
 })

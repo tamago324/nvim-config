@@ -39,4 +39,5 @@ require("nvim-treesitter").install({
 	"java",
 	"hurl",
 	"http",
+	"terraform",
 })
