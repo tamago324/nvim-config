@@ -13,7 +13,7 @@ require("copilot").setup({
 			jump_next = "]]",
 			accept = "<CR>",
 			refresh = "gr",
-			open = "<M-CR>",
+			open = "<M-m>",
 		},
 		layout = {
 			position = "bottom", -- | top | left | right | bottom |
@@ -22,8 +22,8 @@ require("copilot").setup({
 	},
 	suggestion = {
 		enabled = true,
-		auto_trigger = false,
-		hide_during_completion = true,
+		auto_trigger = true,
+		hide_during_completion = false,
 		debounce = 15,
 		trigger_on_accept = true,
 		keymap = {
@@ -48,7 +48,7 @@ require("copilot").setup({
 	auth_provider_url = nil, -- URL to authentication provider, if not "https://github.com/"
 	logger = {
 		file = vim.fn.stdpath("log") .. "/copilot-lua.log",
-		file_log_level = vim.log.levels.OFF,
+		file_log_level = vim.log.levels.TRACE,
 		print_log_level = vim.log.levels.WARN,
 		trace_lsp = "off", -- "off" | "debug" | "verbose"
 		trace_lsp_progress = false,

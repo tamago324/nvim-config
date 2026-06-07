@@ -22,6 +22,9 @@ load_rc_files()
 require("user.git-files-jump")
 require("user.ssh_sudo_edit")
 require("user.mnt_change_cursorline")
+require("user.gitlab_mr")
+-- require("user.url_decode")
+require("user.dcv")
 
 vim.filetype.add({
 	filename = {

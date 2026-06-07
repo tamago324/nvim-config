@@ -149,7 +149,9 @@ Plug 'notomo/promise.nvim'
 Plug 'vim-denops/denops.vim'
 
 " markdown
-Plug 'OXY2DEV/markview.nvim'
+"Plug 'OXY2DEV/markview.nvim'
+Plug 'delphinus/md-render.nvim'
+Plug 'delphinus/budoux.lua'
 Plug 'preservim/vim-markdown'
 Plug 'bullets-vim/bullets.vim'
 
@@ -233,7 +235,7 @@ Plug 'MeanderingProgrammer/render-markdown.nvim'
 Plug 'stevearc/aerial.nvim'
 Plug 'heilgar/nvim-http-client'
 
-Plug 'mgierada/lazydocker.nvim'
+"Plug 'mgierada/lazydocker.nvim'
 Plug 'akinsho/toggleterm.nvim'
 
 Plug 'nabekou29/js-i18n.nvim' " next-intl のメッセージの表示 (すてき！)
@@ -253,7 +255,9 @@ Plug 'folke/snacks.nvim'
 "Plug 'youyoumu/pretty-ts-errors.nvim'
 "Plug 'dmmulroy/ts-error-translator.nvim'
 
-Plug 'github/copilot.vim'
+"let g:copilot_no_tab_map = v:true
+"let g:loaded_copilot = 1
+"Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
 
 call plug#end()

@@ -10,8 +10,8 @@ require("lazydocker").setup({
 	height = 0.9, -- height of the floating window (0-1 for percentage, >1 for absolute rows)
 })
 
-vim.keymap.set("n", "<Space>dl", function()
-	require("lazydocker").open()
-end, {
-	desc = "Open Lazydocker floating window",
-})
+-- vim.keymap.set("n", "<Space>dl", function()
+-- 	require("lazydocker").open()
+-- end, {
+-- 	desc = "Open Lazydocker floating window",
+-- })

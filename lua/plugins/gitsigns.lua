@@ -16,6 +16,15 @@ gitsigns.setup({
 		virt_text_pos = "eol", -- 'eol' で行末に表示
 		delay = 500, -- カーソルを止めてから表示されるまでのミリ秒
 	},
+	word_diff = true,
+	diff_opts = {
+		internal = true,
+		algorithm = "histogram",
+		indent_heuristic = true,
+		linematch = 60,
+		vertical = false,
+		ignore_whitespace_change = true,
+	},
 })
 
 local function close_diff_mode()

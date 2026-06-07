@@ -7,51 +7,6 @@ end
 local cmp = require("cmp")
 local copilot_suggestion_ok, copilot_suggestion = pcall(require, "copilot.suggestion")
 
-local function copilot_suggestion_visible()
-	return copilot_suggestion_ok and copilot_suggestion.is_visible()
-end
-
-local function trigger_copilot_suggestion()
-	if not copilot_suggestion_ok then
-		return
-	end
-
-	vim.schedule(function()
-		copilot_suggestion.next()
-	end)
-end
-
-local function accept_copilot_after_cmp_close(retries)
-	if not copilot_suggestion_ok then
-		return
-	end
-
-	retries = retries or 5
-
-	vim.schedule(function()
-		local bufnr = vim.api.nvim_get_current_buf()
-		local changedtick = vim.api.nvim_buf_get_changedtick(bufnr)
-
-		copilot_suggestion.accept()
-
-		vim.defer_fn(function()
-			if not vim.api.nvim_buf_is_valid(bufnr) then
-				return
-			end
-
-			if vim.api.nvim_buf_get_changedtick(bufnr) ~= changedtick or retries <= 0 then
-				return
-			end
-
-			trigger_copilot_suggestion()
-
-			vim.defer_fn(function()
-				accept_copilot_after_cmp_close(retries - 1)
-			end, 20)
-		end, 20)
-	end)
-end
-
 local sources = {
 	{ name = "nvim_lsp" },
 	{ name = "luasnip" },
@@ -139,8 +94,6 @@ cmp.setup({
 		["<Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
-			elseif copilot_suggestion_visible() then
-				copilot_suggestion.accept()
 			else
 				fallback()
 			end
@@ -170,36 +123,31 @@ cmp.setup({
 			end
 		end),
 
-		["<A-m>"] = cmp.mapping(function(fallback)
+		["<C-o>"] = cmp.mapping(function()
 			if cmp.visible() then
-				vim.b.copilot_accept_after_cmp_close = true
-				cmp.abort()
-				return
+				cmp.close()
 			end
-
-			if copilot_suggestion_visible() then
+			if copilot_suggestion.is_visible() then
 				copilot_suggestion.accept()
 			else
-				fallback()
+				copilot_suggestion.next()
 			end
 		end),
-
-		["<A-n>"] = cmp.mapping(function(fallback)
-			if not copilot_suggestion_ok then
-				fallback()
-				return
+		["<C-n>"] = cmp.mapping(function()
+			if cmp.visible() then
+				cmp.close()
 			end
-
-			copilot_suggestion.next()
+			if copilot_suggestion.is_visible() then
+				copilot_suggestion.next()
+			end
 		end),
-
-		["<A-p>"] = cmp.mapping(function(fallback)
-			if not copilot_suggestion_ok then
-				fallback()
-				return
+		["<C-p>"] = cmp.mapping(function()
+			if cmp.visible() then
+				cmp.close()
 			end
-
-			copilot_suggestion.prev()
+			if copilot_suggestion.is_visible() then
+				copilot_suggestion.prev()
+			end
 		end),
 
 		-- https://github.com/hrsh7th/nvim-cmp/issues/407
@@ -341,54 +289,11 @@ cmp.setup.cmdline(":", {
 	matching = { disallow_symbol_nonprefix_matching = false },
 })
 
+-- デフォルトが、補完候補のメニューが表示されたら、suggestion が非表示になってしまうため、それを防ぐ
 cmp.event:on("menu_opened", function()
 	vim.b.copilot_suggestion_hidden = true
 end)
 
 cmp.event:on("menu_closed", function()
 	vim.b.copilot_suggestion_hidden = false
-
-	if vim.b.copilot_accept_after_cmp_close then
-		vim.b.copilot_accept_after_cmp_close = false
-		accept_copilot_after_cmp_close()
-	end
 end)
-
--- require("cmp_deol_history.suggestions").setup({
--- 	hl_group = "Comment",
--- 	filetypes = {
--- 		"deoledit",
--- 	},
--- })
-
--- if vim.fn.has("win64") ~= 1 then
--- 	require("cmp_zsh").setup({
--- 		zshrc = true,
--- 		filetypes = { "deoledit" },
--- 	})
--- end
-
--- require("cmp_necosyntax").setup({
--- 	filetypes = { "plantuml", "make", "zsh" },
--- })
-
--- -- copilot のサジェストを cmp のメニューが開いているときは非表示にする
--- cmp.event:on("menu_opened", function()
--- 	vim.b.copilot_suggestion_hidden = true
--- end)
---
--- cmp.event:on("menu_closed", function()
--- 	vim.b.copilot_suggestion_hidden = false
--- end)
---
--- -- Copilot をトリガーする
--- vim.keymap.set("i", "<A-j>", function()
--- 	if cmp.visible() then
--- 		cmp.abort()
--- 	end
---
--- 	-- 確実にトリガーさせるため、少し遅らせる
--- 	vim.schedule(function()
--- 		require("copilot.suggestion").next() -- 次の候補を表示（未表示ならトリガー）
--- 	end)
--- end, { desc = "Close cmp and trigger Copilot" })
