@@ -58,13 +58,16 @@ require("lualine").setup({
 		-- section_separators = { left = "", right = "" },
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "", right = "" },
-		disabled_filetypes = {},
+		disabled_filetypes = {
+			statusline = { "AgenticChat", "AgenticInput", "AgenticCode", "AgenticFiles", "AgenticDiagnostics" },
+			winbar = { "AgenticChat", "AgenticInput", "AgenticCode", "AgenticFiles", "AgenticDiagnostics" },
+		},
 		always_divide_middle = true,
 		globalstatus = false,
 	},
 	sections = {
 		lualine_a = { get_mode },
-		lualine_b = { { "filename", path = 4, } },
+		lualine_b = { { "filename", path = 4 } },
 		lualine_c = {
 			"filetype",
 			{
@@ -72,9 +75,9 @@ require("lualine").setup({
 				-- colored = false,
 				diagnostics_color = {
 					error = "DiagnosticSignError", -- Changes diagnostics' error color.
-					warn = "DiagnosticSignWarn",	 -- Changes diagnostics' warn color.
-					info = "DiagnosticSignInfo",	 -- Changes diagnostics' info color.
-					hint = "DiagnosticSignHint",	 -- Changes diagnostics' hint color.
+					warn = "DiagnosticSignWarn", -- Changes diagnostics' warn color.
+					info = "DiagnosticSignInfo", -- Changes diagnostics' info color.
+					hint = "DiagnosticSignHint", -- Changes diagnostics' hint color.
 				},
 				-- symbols = { error = "E", warn = "W", info = "I", hint = "H" },
 				symbols = { error = " ", warn = " ", info = " ", hint = " " },
@@ -88,7 +91,7 @@ require("lualine").setup({
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = { { "filename", path = 4, } },
+		lualine_c = { { "filename", path = 4 } },
 		lualine_x = { "location" },
 		lualine_y = {},
 		lualine_z = {},

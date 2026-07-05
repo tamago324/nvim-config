@@ -110,6 +110,7 @@ Plug 'aznhe21/actions-preview.nvim' " code actions + telescope
 Plug 'pmizio/typescript-tools.nvim'
 "Plug 'ray-x/lsp_signature.nvim'
 "Plug 'Fildo7525/pretty_hover'
+Plug 'linux-cultist/venv-selector.nvim'
 
 " fizzy finder
 Plug 'nvim-telescope/telescope.nvim'
@@ -219,9 +220,8 @@ Plug 'ThePrimeagen/refactoring.nvim'
 
 Plug 'folke/which-key.nvim'
 
-" copilot のチャット
-Plug 'CopilotC-Nvim/CopilotChat.nvim'
-Plug 'MeanderingProgrammer/render-markdown.nvim'
+"" copilot のチャット
+"Plug 'CopilotC-Nvim/CopilotChat.nvim'
 
 " Java
 "Plug 'jkeresman01/spring-initializr.nvim'
@@ -259,5 +259,12 @@ Plug 'folke/snacks.nvim'
 "let g:loaded_copilot = 1
 "Plug 'github/copilot.vim'
 Plug 'zbirenbaum/copilot.lua'
+
+Plug 'nvimtools/none-ls.nvim'
+
+"Plug 'carlos-algms/agentic.nvim'
+"Plug 'MeanderingProgrammer/render-markdown.nvim'
+
+
 
 call plug#end()
